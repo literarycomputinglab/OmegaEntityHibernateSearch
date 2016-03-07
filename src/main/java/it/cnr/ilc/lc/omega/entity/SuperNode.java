@@ -54,7 +54,7 @@ public abstract class SuperNode implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-
+    
     public Status getStatus() {
         return status;
     }
@@ -90,7 +90,6 @@ public abstract class SuperNode implements Serializable {
         } else {
             throw new NullPointerException("NULL or Empty URI are not permitted");
         }
-
     }
 
     @Override
