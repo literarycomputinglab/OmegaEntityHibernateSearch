@@ -17,9 +17,9 @@ import javax.persistence.ManyToOne;
  * @param <E>
  */
 @Entity
-public class Annotation<T extends Content, E extends Annotation.Type> extends Source<T> {
+public class Annotation<T extends Content, E extends Annotation.Data> extends Source<T> {
 
-    @ManyToOne(targetEntity = Annotation.Type.class)
+    @ManyToOne(targetEntity = Annotation.Data.class)
     private E type;
 
     @ManyToMany
@@ -61,23 +61,23 @@ public class Annotation<T extends Content, E extends Annotation.Type> extends So
     }
 
     @Entity
-    public static abstract class Type extends SuperNode {
+    public static abstract class Data extends SuperNode {
 
-        protected Type() {
+        protected Data() {
         }
 
-        <E extends Type> E build(AnnotationBuilder<E> builder) {
+        <E extends Data> E build(AnnotationBuilder<E> builder) {
             return builder.build((E) this);
         }
     }
 
-    private static final Map<String, Class<? extends Annotation.Type>> LOOKUP_TABLE = new HashMap<>();
+    private static final Map<String, Class<? extends Annotation.Data>> LOOKUP_TABLE = new HashMap<>();
 
-    public static void register(String type, Class<? extends Annotation.Type> clazz) {
+    public static void register(String type, Class<? extends Annotation.Data> clazz) {
         LOOKUP_TABLE.put(type, clazz);
     }
 
-    public static <T extends Content, E extends Annotation.Type> Annotation<T, E>
+    public static <T extends Content, E extends Annotation.Data> Annotation<T, E>
             newAnnotation(String type, AnnotationBuilder<E> builder) throws InvalidURIException {
 
         try {

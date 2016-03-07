@@ -7,7 +7,7 @@ import java.net.URI;
  * @author simone
  * @param <T>
  */
-public abstract class AbstractAnnotationBuilder<T extends Annotation.Type> implements AnnotationBuilder<T> {
+public abstract class AbstractAnnotationBuilder<T extends Annotation.Data> implements AnnotationBuilder<T> {
 
     URI uri;
 
