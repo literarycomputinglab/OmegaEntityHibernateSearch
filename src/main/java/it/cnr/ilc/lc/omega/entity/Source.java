@@ -2,7 +2,7 @@ package it.cnr.ilc.lc.omega.entity;
 
 import java.net.URI;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Source<T extends Content> extends SuperNode {
 
-    @ManyToOne(targetEntity = Content.class)
+    @OneToOne(targetEntity = Content.class)
     private T content;
 
     protected Source() {

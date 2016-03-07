@@ -1,7 +1,5 @@
 package it.cnr.ilc.lc.omega;
 
-import it.cnr.ilc.lc.omega.entity.Content;
-import it.cnr.ilc.lc.omega.entity.TextContent;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
