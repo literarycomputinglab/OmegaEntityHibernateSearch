@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
+import org.hibernate.search.annotations.IndexedEmbedded;
 
 /**
  *
@@ -23,6 +24,7 @@ public abstract class Locus<T extends Content> extends SuperNode implements Clon
     @ManyToOne
     private Annotation annotation;
 
+    @IndexedEmbedded
     @ManyToOne
     private Source<T> source;
 

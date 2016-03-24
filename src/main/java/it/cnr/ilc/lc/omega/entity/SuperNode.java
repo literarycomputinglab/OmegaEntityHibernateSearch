@@ -16,6 +16,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
+import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Field;
 
 /**
  *
@@ -32,6 +34,7 @@ public abstract class SuperNode implements Serializable {
         HISTORY, VALID, REMOVED
     }
 
+    @Field(analyze = Analyze.NO)
     private String uri; // FIXME: valutare se la proprietà URI è da considerarsi come proprietà di superclasse.
 
     @Id

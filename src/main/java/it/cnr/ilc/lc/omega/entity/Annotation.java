@@ -7,8 +7,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import org.hibernate.search.annotations.Indexed;
 
 /**
  *
@@ -17,12 +21,13 @@ import javax.persistence.ManyToOne;
  * @param <E>
  */
 @Entity
+@Indexed
 public class Annotation<T extends Content, E extends Annotation.Data> extends Source<T> {
 
     @ManyToOne(targetEntity = Annotation.Data.class)
-    private E type;
+    private E data;
 
-    @ManyToMany
+    @OneToMany  
     private List<Locus> loci = new ArrayList<>();
 
     @ManyToMany
@@ -40,12 +45,12 @@ public class Annotation<T extends Content, E extends Annotation.Data> extends So
         return loci.remove(locus);
     }
 
-    public E getType() {
-        return type;
+    public E getData() {
+        return data;
     }
 
-    private void setType(E type) {
-        this.type = type;
+    private void setData(E data) {
+        this.data = data;
     }
 
     public Iterator<Relation> getRelations() {
@@ -61,6 +66,7 @@ public class Annotation<T extends Content, E extends Annotation.Data> extends So
     }
 
     @Entity
+    @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
     public static abstract class Data extends SuperNode {
 
         protected Data() {
@@ -87,7 +93,7 @@ public class Annotation<T extends Content, E extends Annotation.Data> extends So
                 throw new NullPointerException("No implementation found for type " + type);
             }
             E extension = (E) c.newInstance();
-            annotation.setType(extension.build(builder));
+            annotation.setData(extension.build(builder));
 
             annotation.setUri(builder.getURI().toASCIIString()); //puo' sollevare eccezione se URI e' nulla o vuota
 

@@ -1,16 +1,27 @@
 package it.cnr.ilc.lc.omega.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 
 /**
  *
  * @author oakgen
  */
 @Entity
+@Indexed
 public class TextLocus extends Locus<TextContent> implements Cloneable {
 
+    @Field
     private Integer start;
+
+    @Field
     private Integer end;
+
+    @Field
+    @Column(columnDefinition = "TEXT")
+    private String fragment;
 
     TextLocus(TextLocus locus) {
         this.start = locus.getStart();
@@ -37,6 +48,14 @@ public class TextLocus extends Locus<TextContent> implements Cloneable {
             throw new InvocationMthodException("content boundaries cannot be set on locus pointing to" + PointsTo.SOURCE.name());
         }
         this.end = end;
+    }
+
+    public String getFragment() {
+        return fragment;
+    }
+
+    public void setFragment(String fragment) {
+        this.fragment = fragment;
     }
 
     @Override
