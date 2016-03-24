@@ -10,11 +10,26 @@ import java.net.URI;
 public abstract class AbstractAnnotationBuilder<T extends Annotation.Data> implements AnnotationBuilder<T> {
 
     URI uri;
+    
+   // utilizzare un campo per indicizzare
+    String indexedLucene
 
+    
+    
+    /**
+     * DA UTILIZZARE NEL BULDER CONCRETO
+     * public BaseAnnotationBuilder URI(URI uri) {
+     *   setURI(uri);
+     *  return this;
+    }
+    */
+    
     @Override
     final public void setURI(URI uri) {
         this.uri = uri;
     }
+    
+    
 
     @Override
     final public URI getURI() {
