@@ -12,7 +12,7 @@ public abstract class AbstractAnnotationBuilder<T extends Annotation.Data> imple
     URI uri;
     
    // utilizzare un campo per indicizzare
-    String indexedLucene
+    String indexedLucene;
 
     
     

@@ -27,7 +27,7 @@ public class Annotation<T extends Content, E extends Annotation.Data> extends So
 
     @IndexedEmbedded(targetElement = AbstractAnnotationBuilder.class) // indicazione sulla classe che deve essere indicizzata da lucene
     @ManyToOne(targetEntity = Annotation.Data.class)
-    private E data
+    private E data;
 
     @OneToMany  
     private List<Locus> loci = new ArrayList<>();
