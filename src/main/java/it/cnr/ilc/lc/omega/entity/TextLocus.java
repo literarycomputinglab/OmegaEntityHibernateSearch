@@ -23,6 +23,10 @@ public class TextLocus extends Locus<TextContent> implements Cloneable {
     @Column(columnDefinition = "TEXT")
     private String fragment;
 
+    public TextLocus() {
+    }
+
+    
     TextLocus(TextLocus locus) {
         this.start = locus.getStart();
         this.end = locus.getEnd();

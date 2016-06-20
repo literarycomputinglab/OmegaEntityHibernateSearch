@@ -4,6 +4,7 @@ import java.net.URI;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
+import org.hibernate.annotations.Target;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
 
@@ -16,7 +17,7 @@ import org.hibernate.search.annotations.IndexedEmbedded;
 @Entity
 public class Source<T extends Content> extends SuperNode {
 
-    @IndexedEmbedded(targetElement = TextContent.class)
+    @IndexedEmbedded(targetElement = Content.class)
     @OneToOne(targetEntity = Content.class, cascade = CascadeType.ALL)
     private T content;
 

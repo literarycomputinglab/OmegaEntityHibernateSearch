@@ -1,6 +1,7 @@
 package it.cnr.ilc.lc.omega.entity;
 
 import java.net.URI;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -21,11 +22,11 @@ public abstract class Locus<T extends Content> extends SuperNode implements Clon
         SOURCE, CONTENT;
     }
 
-    @ManyToOne
+    @ManyToOne (cascade = CascadeType.ALL)
     private Annotation annotation;
 
     @IndexedEmbedded
-    @ManyToOne
+    @ManyToOne (cascade = CascadeType.ALL)
     private Source<T> source;
 
     private String pointsTo;

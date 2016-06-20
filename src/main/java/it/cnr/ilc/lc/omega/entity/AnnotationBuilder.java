@@ -12,7 +12,9 @@ public interface AnnotationBuilder<T extends Annotation.Data> {
     T build(T extension);
 
     void setURI(URI uri);
-    
+
     URI getURI();
+
+    void setIndex(String indexedLucene);
 
 }

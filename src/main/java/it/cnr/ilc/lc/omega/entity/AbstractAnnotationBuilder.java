@@ -36,4 +36,9 @@ public abstract class AbstractAnnotationBuilder<T extends Annotation.Data> imple
         return uri;
     }
 
+    @Override
+    public void setIndex(String indexedLucene) {
+        this.indexedLucene = indexedLucene;
+    }
+
 }
