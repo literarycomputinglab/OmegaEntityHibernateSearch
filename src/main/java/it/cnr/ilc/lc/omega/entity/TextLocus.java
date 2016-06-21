@@ -2,6 +2,8 @@ package it.cnr.ilc.lc.omega.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 
@@ -13,11 +15,13 @@ import org.hibernate.search.annotations.Indexed;
 @Indexed
 public class TextLocus extends Locus<TextContent> implements Cloneable {
 
-    @Field
-    private Integer start;
+    private static final Logger logger = LogManager.getLogger(TextLocus.class);
 
     @Field
-    private Integer end;
+    private Integer startLocus;
+
+    @Field
+    private Integer endLocus;
 
     @Field
     @Column(columnDefinition = "TEXT")
@@ -26,32 +30,58 @@ public class TextLocus extends Locus<TextContent> implements Cloneable {
     public TextLocus() {
     }
 
-    
     TextLocus(TextLocus locus) {
-        this.start = locus.getStart();
-        this.end = locus.getEnd();
+        this.startLocus = locus.getStartLocus();
+        this.endLocus = locus.getEndLocus();
     }
 
-    public Integer getStart() {
-        return start;
-    }
+    @Override
+    public void setAnnotation(Annotation annotation) {
 
-    public void setStart(Integer start) {
-        if (getPointsTo().equals(PointsTo.SOURCE.name())) {
-            throw new InvocationMthodException("content boundaries cannot be set on locus pointing to " + PointsTo.SOURCE.name());
+        Source<TextContent> stc = this.getSource();
+
+        try {
+            this.setFragment(stc.getContent().getText().substring(this.getStartLocus(), this.getEndLocus()));
+        } catch (NullPointerException e) {
+
+            if (null == this.getSource()) {
+                logger.error("Impossible to create fragment! Source is null: " + e.getMessage());
+            } else if (null == stc.getContent()) {
+                logger.error("Impossible to create fragment! Content is null: " + e.getMessage());
+            } else if (null == stc.getContent().getText()) {
+                logger.error("Impossible to create fragment! Text is null: " + e.getMessage());
+            }
+        } catch (IndexOutOfBoundsException ee) {
+            logger.error("Data lenght: " + stc.getContent().getText().length()
+                    + ", start " + this.getStartLocus() + ", end " + this.getEndLocus() + ", ", ee);
+        } catch (Exception eee) {
+            logger.error("Error ", eee);
         }
-        this.start = start;
+
+        super.setAnnotation(annotation);
+
     }
 
-    public Integer getEnd() {
-        return end;
+    public Integer getStartLocus() {
+        return startLocus;
     }
 
-    public void setEnd(Integer end) {
+    public void setStartLocus(Integer startLocus) {
         if (getPointsTo().equals(PointsTo.SOURCE.name())) {
-            throw new InvocationMthodException("content boundaries cannot be set on locus pointing to" + PointsTo.SOURCE.name());
+            throw new InvocationMethodException("content boundaries cannot be set on locus pointing to " + PointsTo.SOURCE.name());
         }
-        this.end = end;
+        this.startLocus = startLocus;
+    }
+
+    public Integer getEndLocus() {
+        return endLocus;
+    }
+
+    public void setEndLocus(Integer endLocus) {
+        if (getPointsTo().equals(PointsTo.SOURCE.name())) {
+            throw new InvocationMethodException("content boundaries cannot be set on locus pointing to" + PointsTo.SOURCE.name());
+        }
+        this.endLocus = endLocus;
     }
 
     public String getFragment() {
@@ -68,9 +98,9 @@ public class TextLocus extends Locus<TextContent> implements Cloneable {
         return l;
     }
 
-    public static class InvocationMthodException extends RuntimeException {
+    public static class InvocationMethodException extends RuntimeException {
 
-        public InvocationMthodException(String message) {
+        public InvocationMethodException(String message) {
             super(message);
         }
 

@@ -6,16 +6,21 @@
 package it.cnr.ilc.lc.omega.annotation;
 
 import it.cnr.ilc.lc.omega.entity.Annotation;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 
 /**
  *
  * @author simone
  */
-
 @Entity
-public class BaseAnnotation extends Annotation.Data{
-    
+@Indexed
+public class BaseAnnotation extends Annotation.Data {
+
+    @Field
+    @Column(length = 4096)
     String content;
 
     public String getContent() {
@@ -25,7 +30,5 @@ public class BaseAnnotation extends Annotation.Data{
     public void setContent(String content) {
         this.content = content;
     }
-    
-    
-    
+
 }

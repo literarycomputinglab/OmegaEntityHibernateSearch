@@ -35,7 +35,8 @@ public abstract class Locus<T extends Content> extends SuperNode implements Clon
         return annotation;
     }
 
-    void setAnnotation(Annotation annotation) {
+    protected void setAnnotation(Annotation annotation)  {
+        
         this.annotation = annotation;
     }
 
@@ -55,6 +56,10 @@ public abstract class Locus<T extends Content> extends SuperNode implements Clon
         this.pointsTo = pointsTo;
     }
 
+    public <K extends Locus<T>> K get () {
+        return (K) this;
+    }
+    
     @Override
     public Object clone() throws CloneNotSupportedException {
         return super.clone();

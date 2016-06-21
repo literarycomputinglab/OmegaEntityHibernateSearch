@@ -32,7 +32,7 @@ public abstract class Content extends SuperNode {
         return mimetype;
     }
 
-    Source<?> getSource() {
+    public Source<?> getSource() {
         return source;
     }
 

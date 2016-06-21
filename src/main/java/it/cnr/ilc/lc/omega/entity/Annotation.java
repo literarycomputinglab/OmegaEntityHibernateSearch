@@ -10,18 +10,14 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
 import org.hibernate.search.annotations.Analyzer;
-import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
@@ -33,20 +29,15 @@ import org.hibernate.search.annotations.IndexedEmbedded;
  * @param <E>
  */
 @Entity
-@Indexed(index = "Annotation")
+@Indexed(index = "it.cnr.ilc.lc.omega.entity.Annotation")
 public class Annotation<T extends Content, E extends Annotation.Data> extends Source<T> {
-
-
 
     @IndexedEmbedded(targetElement = Annotation.Data.class) // indicazione sulla classe che deve essere indicizzata da lucene
     @ManyToOne(targetEntity = Annotation.Data.class, cascade = CascadeType.ALL)
     private E data;
 
     @OneToMany(cascade = CascadeType.ALL)
-    private List<Locus> loci = new ArrayList<>();
-
-    @Field
-    private String testa;
+    private List<Locus> loci;
 
     @ManyToMany
     private List<Relation> relations = new ArrayList<>();
@@ -55,12 +46,19 @@ public class Annotation<T extends Content, E extends Annotation.Data> extends So
     }
 
     public <V extends Content> void addLocus(Locus<V> locus) {
+        if (null == loci) {
+             loci = new ArrayList<>();
+        }
         locus.setAnnotation(this);
         loci.add(locus);
     }
 
     public <V extends Content> boolean removeLocus(Locus<V> locus) {
         return loci.remove(locus);
+    }
+
+    public <V extends Content> Iterator<Locus<V>> getLoci(Class<V> clazz) {
+        return (Iterator) loci.iterator();
     }
 
     public E getData() {
@@ -86,11 +84,14 @@ public class Annotation<T extends Content, E extends Annotation.Data> extends So
     @Entity
     @Embeddable
     @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-    public static class Data extends SuperNode {
+    public static abstract class Data extends SuperNode {
 
         @Field(analyzer = @Analyzer(impl = WhitespaceAnalyzer.class))
         @Column(length = 4096)
         private String indexField;
+
+        @OneToOne(cascade = CascadeType.ALL)
+        private Annotation annotation;
 
         public void setIndexField(String indexField) {
             this.indexField = indexField;
@@ -102,6 +103,17 @@ public class Annotation<T extends Content, E extends Annotation.Data> extends So
         <E extends Data> E build(AnnotationBuilder<E> builder) {
             return builder.build((E) this);
         }
+
+        final void setAnnotation(Annotation ann) {
+
+            this.annotation = ann;
+        }
+
+        public final Annotation getAnnotation() {
+
+            return this.annotation;
+        }
+
     }
 
     private static final Map<String, Class<? extends Annotation.Data>> LOOKUP_TABLE = new HashMap<>();
@@ -121,8 +133,8 @@ public class Annotation<T extends Content, E extends Annotation.Data> extends So
             }
             E extension = (E) c.newInstance();
             annotation.setData(extension.build(builder));
-
             annotation.setUri(builder.getURI().toASCIIString()); //puo' sollevare eccezione se URI e' nulla o vuota
+            annotation.getData().setAnnotation(annotation);
 
             return annotation;
 
@@ -131,13 +143,4 @@ public class Annotation<T extends Content, E extends Annotation.Data> extends So
         }
 
     }
-
-    public String getTesta() {
-        return testa;
-    }
-
-    public void setTesta(String testa) {
-        this.testa = testa;
-    }
-
 }
