@@ -31,4 +31,9 @@ public class BaseAnnotation extends Annotation.Data {
         this.content = content;
     }
 
+    @Override
+    public <E extends Annotation.Data> E get() {
+        return  (E) this;
+    }
+
 }

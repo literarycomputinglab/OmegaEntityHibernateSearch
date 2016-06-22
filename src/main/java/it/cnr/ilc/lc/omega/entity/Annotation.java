@@ -113,6 +113,8 @@ public class Annotation<T extends Content, E extends Annotation.Data> extends So
 
             return this.annotation;
         }
+        
+        public abstract <E extends Data> E get();
 
     }
 
