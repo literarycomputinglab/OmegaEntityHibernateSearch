@@ -15,6 +15,6 @@ public interface AnnotationBuilder<T extends Annotation.Data> {
 
     URI getURI();
 
-    void setIndex(String indexedLucene);
+//    void setIndex(String indexedLucene);
 
 }
