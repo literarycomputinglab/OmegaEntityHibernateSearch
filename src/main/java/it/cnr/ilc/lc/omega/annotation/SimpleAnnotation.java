@@ -13,32 +13,27 @@ import org.hibernate.search.annotations.Indexed;
 
 /**
  *
- * @author angelo
+ * @author simone
  */
 @Entity
 @Indexed
-public class BaseAnnotation extends Annotation.Data {
+public class SimpleAnnotation extends Annotation.Data {
 
     @Field
     @Column(length = 4096)
-    private String text;
-    
-    public String getText() {
-        return text;
+    String content;
+
+    public String getContent() {
+        return content;
     }
 
-    void setText(String text) {
-        this.text = text;
+    public void setContent(String content) {
+        this.content = content;
     }
-
-//    @Override
-//    public <T extends Annotation.Data> T build(Builder<T> builder) {
-//        this.builder = (Builder<BaseAnnotationExtension>) builder;
-//        return (T) this.builder.build(this);
-//    }
 
     @Override
     public <E extends Annotation.Data> E get() {
-        return (E) this;
+        return  (E) this;
     }
+
 }

@@ -8,35 +8,31 @@ package it.cnr.ilc.lc.omega.annotation;
 import it.cnr.ilc.lc.omega.entity.AbstractAnnotationBuilder;
 import java.net.URI;
 
+
 /**
  *
- * @author simone
+ * @author angelo
  */
 public class BaseAnnotationBuilder extends AbstractAnnotationBuilder<BaseAnnotation>{
 
-    String content;
+    private String text = "";
+    
+    public BaseAnnotationBuilder text(String f) {
+        this.text = f;
+        return this;
+    }
+    
+    public BaseAnnotationBuilder URI(URI uri) {
+        setURI(uri);
+        return this;
+    }
+    
+    
 
-    public BaseAnnotationBuilder content(String content) {
-        this.content = content;
-        return this;
-    }
-    
-    public BaseAnnotationBuilder uri (URI aUri) {
-        
-        this.setURI(aUri);
-        return this;
-    }
-    
-    @Override
     public BaseAnnotation build(BaseAnnotation extension) {
-
-        extension.setContent(content);
-        extension.setIndexField(content);
-        
+        extension.setText(this.text);
+        extension.setIndexField(text);
         return extension;
-        
     }
-    
-    
-    
+
 }

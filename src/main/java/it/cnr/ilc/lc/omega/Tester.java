@@ -2,8 +2,8 @@ package it.cnr.ilc.lc.omega;
 
 import it.cnr.ilc.lc.omega.annotation.AdvancedAnnotation;
 import it.cnr.ilc.lc.omega.annotation.AdvancedAnnotationBuilder;
-import it.cnr.ilc.lc.omega.annotation.BaseAnnotation;
-import it.cnr.ilc.lc.omega.annotation.BaseAnnotationBuilder;
+import it.cnr.ilc.lc.omega.annotation.SimpleAnnotation;
+import it.cnr.ilc.lc.omega.annotation.SimpleAnnotationBuilder;
 import it.cnr.ilc.lc.omega.entity.Annotation;
 import it.cnr.ilc.lc.omega.entity.Content;
 import it.cnr.ilc.lc.omega.entity.Locus;
@@ -65,11 +65,11 @@ public class Tester {
         locus.setStartLocus(2);
         locus.setEndLocus(7);
 
-        Annotation.register("base", BaseAnnotation.class);
+        Annotation.register("base", SimpleAnnotation.class);
 
-        Annotation<TextContent, BaseAnnotation> annotation
+        Annotation<TextContent, SimpleAnnotation> annotation
                 = Annotation.newAnnotation("base",
-                        new BaseAnnotationBuilder().uri(URI.create("/base/annotation/uri/004")).content("Un esempio di annotazione di base"));
+                        new SimpleAnnotationBuilder().uri(URI.create("/base/annotation/uri/004")).content("Un esempio di annotazione di base"));
 
         annotation.addLocus(locus);
 
@@ -207,7 +207,7 @@ public class Tester {
                 = org.hibernate.search.jpa.Search.getFullTextEntityManager(entityManager);
 
         QueryBuilder builder = fullTextEntityManager.getSearchFactory()
-                .buildQueryBuilder().forEntity(BaseAnnotation.class).get();
+                .buildQueryBuilder().forEntity(SimpleAnnotation.class).get();
 
         org.apache.lucene.search.Query query = builder
                 .keyword()
@@ -219,14 +219,14 @@ public class Tester {
         logger.info("Searching for BaseAnnotation");
 
         javax.persistence.Query persistenceQuery
-                = fullTextEntityManager.createFullTextQuery(query, BaseAnnotation.class);
+                = fullTextEntityManager.createFullTextQuery(query, SimpleAnnotation.class);
 
-        List<BaseAnnotation> results = persistenceQuery.getResultList();
+        List<SimpleAnnotation> results = persistenceQuery.getResultList();
 
         logger.info("Result is empty? " + results.isEmpty() + " " + results.size());
 
-        for (BaseAnnotation ba : results) {
-            Annotation<TextContent, BaseAnnotation> a = ba.getAnnotation();
+        for (SimpleAnnotation ba : results) {
+            Annotation<TextContent, SimpleAnnotation> a = ba.getAnnotation();
             logger.info("BaseAnnotation a: " + a.getUri());
 
             Iterator<Locus<TextContent>> it = a.getLoci(TextContent.class);
