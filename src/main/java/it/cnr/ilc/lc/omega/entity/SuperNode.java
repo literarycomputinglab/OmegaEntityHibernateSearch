@@ -3,6 +3,7 @@ package it.cnr.ilc.lc.omega.entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
@@ -14,6 +15,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Version;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.search.annotations.Analyze;
@@ -35,6 +37,7 @@ public abstract class SuperNode implements Serializable {
     }
 
     @Field(analyze = Analyze.NO)
+    @Column(unique = true)
     private String uri; // FIXME: valutare se la proprietà URI è da considerarsi come proprietà di superclasse.
 
     @Id
@@ -45,11 +48,14 @@ public abstract class SuperNode implements Serializable {
     private Status status;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date time;
+    private Date temporalMark;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private SuperNode valid;
 
+    @Version
+    private Long lockVersion;
+    
     public Long getId() {
         return id;
     }
@@ -66,12 +72,12 @@ public abstract class SuperNode implements Serializable {
         this.status = status;
     }
 
-    public Date getTime() {
-        return time;
+    public Date getTemporalMark() {
+        return temporalMark;
     }
 
-    public void setTime(Date time) {
-        this.time = time;
+    public void setTemporalMark(Date temporalMark) {
+        this.temporalMark = temporalMark;
     }
 
     public SuperNode getValid() {
@@ -122,4 +128,10 @@ public abstract class SuperNode implements Serializable {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return getUri();
+    }
+
+    
 }

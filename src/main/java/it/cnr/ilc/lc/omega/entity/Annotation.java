@@ -2,6 +2,7 @@ package it.cnr.ilc.lc.omega.entity;
 
 import it.cnr.ilc.lc.omega.exception.InvalidURIException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -16,9 +17,13 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
+import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
 
@@ -31,6 +36,8 @@ import org.hibernate.search.annotations.IndexedEmbedded;
 @Entity
 @Indexed(index = "it.cnr.ilc.lc.omega.entity.Annotation")
 public class Annotation<T extends Content, E extends Annotation.Data> extends Source<T> {
+
+    private static final Logger log = LogManager.getLogger(Annotation.class);
 
     @IndexedEmbedded(targetElement = Annotation.Data.class) // indicazione sulla classe che deve essere indicizzata da lucene
     @ManyToOne(targetEntity = Annotation.Data.class, cascade = CascadeType.ALL)
@@ -47,7 +54,7 @@ public class Annotation<T extends Content, E extends Annotation.Data> extends So
 
     public <V extends Content> void addLocus(Locus<V> locus) {
         if (null == loci) {
-             loci = new ArrayList<>();
+            loci = new ArrayList<>();
         }
         locus.setAnnotation(this);
         loci.add(locus);
@@ -93,7 +100,14 @@ public class Annotation<T extends Content, E extends Annotation.Data> extends So
         @OneToOne(cascade = CascadeType.ALL)
         private Annotation annotation;
 
-        public void setIndexField(String indexField) {
+        @Field(analyze = Analyze.NO, index = Index.YES)
+        @Column(length = 1024)
+        private String annotationAuthor;
+
+        @Field
+        private Date creationDate;
+
+        public final void setIndexField(String indexField) {
             this.indexField = indexField;
         }
 
@@ -113,8 +127,24 @@ public class Annotation<T extends Content, E extends Annotation.Data> extends So
 
             return this.annotation;
         }
-        
+
         public abstract <E extends Data> E get();
+
+        public String getAnnotationAuthor() {
+            return annotationAuthor;
+        }
+
+        public final void setAnnotationAuthor(String annotationAuthor) {
+            this.annotationAuthor = annotationAuthor;
+        }
+
+        public Date getCreationDate() {
+            return creationDate;
+        }
+
+        public final void setCreationDate(Date creationDate) {
+            this.creationDate = creationDate;
+        }
 
     }
 
@@ -135,7 +165,7 @@ public class Annotation<T extends Content, E extends Annotation.Data> extends So
             }
             E extension = (E) c.newInstance();
             annotation.setData(extension.build(builder));
-            annotation.setUri(builder.getURI().toASCIIString()); //puo' sollevare eccezione se URI e' nulla o vuota
+            annotation.setUri(builder.getUri().toASCIIString()); //puo' sollevare eccezione se URI e' nulla o vuota
             annotation.getData().setAnnotation(annotation);
 
             return annotation;

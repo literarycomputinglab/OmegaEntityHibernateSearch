@@ -27,7 +27,7 @@ public class SimpleAnnotation extends Annotation.Data {
         return content;
     }
 
-    public void setContent(String content) {
+    void setContent(String content) {
         this.content = content;
     }
 

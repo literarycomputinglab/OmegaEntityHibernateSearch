@@ -32,7 +32,7 @@ public class AbbreviationAnnotation extends Annotation.Data {
         return abbrevationExpansion;
     }
 
-    public void setAbbrevationExpansion(String abbrevationExpansion) {
+    void setAbbrevationExpansion(String abbrevationExpansion) {
         this.abbrevationExpansion = abbrevationExpansion;
     }
 
@@ -40,7 +40,7 @@ public class AbbreviationAnnotation extends Annotation.Data {
         return abbrevation;
     }
 
-    public void setAbbrevation(String abbrevation) {
+    void setAbbrevation(String abbrevation) {
         this.abbrevation = abbrevation;
     }
 

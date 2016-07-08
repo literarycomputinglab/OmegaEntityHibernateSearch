@@ -43,4 +43,12 @@ public class Source<T extends Content> extends SuperNode {
         return newSource;
     }
 
+    @Override
+    public String toString() {
+        return super.toString() + " " + getContent().toString();
+    }
+    
+    
+    
+
 }

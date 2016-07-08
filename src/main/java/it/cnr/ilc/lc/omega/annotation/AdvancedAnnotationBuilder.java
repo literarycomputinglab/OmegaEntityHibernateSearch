@@ -44,9 +44,9 @@ public class AdvancedAnnotationBuilder extends AbstractAnnotationBuilder<Advance
     public AdvancedAnnotation build(AdvancedAnnotation extension) {
 
         extension.setNote(note);
-        extension.setAuthor(author);
+        extension.setAnnotationAuthor(author);
         extension.setDate(date);
-
+        
         extension.setIndexField(note + " " + author);
 
         return extension;

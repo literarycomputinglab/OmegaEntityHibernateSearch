@@ -48,4 +48,11 @@ public abstract class Content extends SuperNode {
         }
     }
 
+    @Override
+    public String toString() {
+        return super.toString() + " " + getMimetype(); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
+
 }

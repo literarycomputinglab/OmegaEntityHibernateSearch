@@ -11,6 +11,7 @@ import it.cnr.ilc.lc.omega.entity.Source;
 import it.cnr.ilc.lc.omega.entity.TextContent;
 import it.cnr.ilc.lc.omega.entity.TextLocus;
 import it.cnr.ilc.lc.omega.exception.InvalidURIException;
+import it.cnr.ilc.lc.omega.persistence.PersistenceHandler;
 import java.net.URI;
 import java.util.Calendar;
 import java.util.Date;
@@ -33,18 +34,21 @@ public class Tester {
 
     private static final Logger logger = LogManager.getLogger(Tester.class);
 
-    public static void main(String[] args) throws InvalidURIException {
+    public static void main(String[] args) throws InvalidURIException, InterruptedException {
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("OmegaPU");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
 
         insertBaseAnnotation(entityManager);
-        insertAdvancedAnnotation(entityManager);
+//        insertAdvancedAnnotation(entityManager);
         // search("esempio", entityManager);
         // searchTextContent("del", entityManager);
         //searchForBaseAnnotation("esempio", entityManager);
         //searchSourceByURI("/uri/of/source/001", entityManager);
-        Calendar calendar = new GregorianCalendar(2013, 1, 28, 13, 24, 56);
-        searchByDate(calendar.getTime(), entityManager);
+//        Calendar calendar = new GregorianCalendar(2013, 1, 28, 13, 24, 56);
+//        searchByDate(calendar.getTime(), entityManager);
+
+        threadSafeTest();
+        
         entityManager.close();
     }
 
@@ -318,6 +322,42 @@ public class Tester {
         entityManager.getTransaction().commit();
 
         logger.info("End.");
+
+    }
+
+    public static void threadSafeTest() throws InterruptedException {
+
+        PersistenceHandler ph = new PersistenceHandler();
+
+        EntityManager em = ph.getEntityManager();
+
+        Source s
+                = em.find(Source.class, 4l);
+
+//        Thread thread = new Thread("New Thread") {
+//            public void run() {
+//                EntityManager em2 = ph.getEntityManager();
+//
+//                Query q
+//                        = em2.createNativeQuery("SELECT s.uri FROM Source as s WHERE s.uri='//source/text/000'");
+//
+//                List<String> r2 = q.getResultList();
+//                log.info(r2.get(0));
+//                
+//                q = em2.createNativeQuery("UPDATE Source s SET  s.uri = '//source/text/001'  WHERE s.uri='//source/text/000'");
+//
+//                q.
+//                em2.close();
+//
+//            }
+//        };
+//
+//        thread.start();
+        logger.info(s.getUri());
+
+        em.close();
+       // Thread.sleep(1000);
+        ph.close();
 
     }
 

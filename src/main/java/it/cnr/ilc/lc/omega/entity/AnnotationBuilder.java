@@ -1,6 +1,7 @@
 package it.cnr.ilc.lc.omega.entity;
 
 import java.net.URI;
+import java.util.Date;
 
 /**
  *
@@ -13,8 +14,10 @@ public interface AnnotationBuilder<T extends Annotation.Data> {
 
     void setURI(URI uri);
 
-    URI getURI();
-
-//    void setIndex(String indexedLucene);
-
+    void setAnnotationAuthor(String annotationAuthor);
+    
+    void setCreationDate (Date date);
+    
+    URI getUri();
+    
 }

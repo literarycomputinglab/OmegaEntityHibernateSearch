@@ -29,4 +29,11 @@ public class TextContent extends Content {
         this.text = text;
     }
 
+    @Override
+    public String toString() {
+        return super.toString() + " " + text.substring(0, (text.length() < 50)?text.length():50); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
+
 }
