@@ -20,12 +20,18 @@ import javax.persistence.OneToOne;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
+import org.apache.lucene.analysis.core.WhitespaceTokenizerFactory;
+import org.apache.lucene.analysis.pattern.PatternReplaceCharFilterFactory;
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Analyzer;
+import org.hibernate.search.annotations.AnalyzerDef;
+import org.hibernate.search.annotations.CharFilterDef;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
+import org.hibernate.search.annotations.Parameter;
+import org.hibernate.search.annotations.TokenizerDef;
 
 /**
  *
@@ -35,6 +41,15 @@ import org.hibernate.search.annotations.IndexedEmbedded;
  */
 @Entity
 @Indexed(index = "it.cnr.ilc.lc.omega.entity.Annotation")
+@AnalyzerDef(name = "dataTextAnalyzer", charFilters
+        = {
+            @CharFilterDef(factory = PatternReplaceCharFilterFactory.class, params
+                    = {
+                @Parameter(name = "pattern", value = "[,\\.;:]"),
+                @Parameter(name = "replacement", value = " ")
+            })
+        }, tokenizer = @TokenizerDef(factory = WhitespaceTokenizerFactory.class))
+
 public class Annotation<T extends Content, E extends Annotation.Data> extends Source<T> {
 
     private static final Logger log = LogManager.getLogger(Annotation.class);
@@ -93,7 +108,7 @@ public class Annotation<T extends Content, E extends Annotation.Data> extends So
     @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
     public static abstract class Data extends SuperNode {
 
-        @Field(analyzer = @Analyzer(impl = WhitespaceAnalyzer.class))
+        @Field(analyzer = @Analyzer(definition = "dataTextAnalyzer"))
         @Column(length = 4096)
         private String indexField;
 

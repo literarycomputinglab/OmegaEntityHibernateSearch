@@ -6,20 +6,40 @@
 package it.cnr.ilc.lc.omega.annotation.structural;
 
 import it.cnr.ilc.lc.omega.entity.Annotation;
+import it.cnr.ilc.lc.omega.entity.ext.Person;
 import java.util.Date;
+import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.Temporal;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
 
 /**
  *
  * @author simone
  */
-public class WorkAnnotation extends Annotation.Data{
+@Entity
+@Indexed
+public class WorkAnnotation extends Annotation.Data {
 
+    @Field
+    @Column(length = 4096)
     private String title;
-    
-    private String[] authors;
-    
+
+    @IndexedEmbedded(includePaths = {"name", "surname"})
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<Person> authors;
+
+    @Field
+    @Temporal(javax.persistence.TemporalType.DATE)
     private Date publicationDate;
-    
+
+    @Field
+    @Column(length = 4096)
     private String info;
 
     public String getTitle() {
@@ -30,11 +50,11 @@ public class WorkAnnotation extends Annotation.Data{
         this.title = title;
     }
 
-    public String[] getAuthors() {
+    public List<Person> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(String[] authors) {
+    public void setAuthors(List<Person> authors) {
         this.authors = authors;
     }
 
@@ -53,14 +73,10 @@ public class WorkAnnotation extends Annotation.Data{
     public void setInfo(String info) {
         this.info = info;
     }
-    
-    
-    
-    
+
     @Override
     public <E extends Annotation.Data> E get() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    
+
 }

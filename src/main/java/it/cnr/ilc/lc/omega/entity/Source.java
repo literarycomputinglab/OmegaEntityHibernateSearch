@@ -45,7 +45,7 @@ public class Source<T extends Content> extends SuperNode {
 
     @Override
     public String toString() {
-        return super.toString() + " " + getContent().toString();
+        return super.toString() + " " + ((null== getContent())?"No Content!":getContent().toString());
     }
     
     

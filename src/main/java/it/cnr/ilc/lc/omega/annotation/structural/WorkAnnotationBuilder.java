@@ -6,14 +6,22 @@
 package it.cnr.ilc.lc.omega.annotation.structural;
 
 import it.cnr.ilc.lc.omega.entity.AbstractAnnotationBuilder;
+import it.cnr.ilc.lc.omega.entity.ext.Person;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
  * @author simone
  */
 public class WorkAnnotationBuilder extends AbstractAnnotationBuilder<WorkAnnotation> {
+
+    private static final Logger log = LogManager.getLogger(WorkAnnotationBuilder.class);
 
     private String title;
 
@@ -61,20 +69,38 @@ public class WorkAnnotationBuilder extends AbstractAnnotationBuilder<WorkAnnotat
         return this;
     }
 
-    
-    
     @Override
     public WorkAnnotation build(WorkAnnotation extension) {
         extension.setAnnotationAuthor(annotationAuthor);
-        extension.setAuthors(authors);
+        extension.setAuthors(listOfPersons(authors));
         extension.setCreationDate(creationDate);
-        extension.setIndexField(title + String.join(" ", authors));
+        extension.setIndexField(title + " " +  String.join(" ", authors));
         extension.setInfo(info);
         extension.setPublicationDate(publicationDate);
         extension.setTitle(title);
-        
+
         return extension;
     }
+
+    private List<Person> listOfPersons(String[] authors) {
+
+        List<Person> ret = new ArrayList<>();
+
+        for (String author : authors) {
+            log.info("author: " + author);
+
+            String[] str = author.split(",");
+            Person p = new Person();
+            p.setName(str[0]);
+            p.setSurname(str[1]);
+            ret.add(p);
+        }
+
+        return ret;
+
+    }
+
+    
     
     ///////////TODO
     /*
@@ -82,4 +108,11 @@ public class WorkAnnotationBuilder extends AbstractAnnotationBuilder<WorkAnnotat
         AUTHOR
         DATA
      */
+
+    @Override
+    public String toString() {
+        return "title=(" + title + "), authors=("+ Arrays.toString(authors) +
+                ") pubblicationDate=(" + publicationDate + "), info=(" + info + ")"
+                + ", uri=(" + uri + ")";
+    }
 }
