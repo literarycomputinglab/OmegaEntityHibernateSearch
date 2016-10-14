@@ -8,16 +8,6 @@
     
     <dependencies>
         <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
-            <version>5.1.0.Final</version>
-        </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.38</version>
-        </dependency>
-        <dependency>
             <groupId>it.cnr.ilc.lc</groupId>
             <artifactId>OmegaException</artifactId>
             <version>1.0.0</version>
@@ -27,20 +17,15 @@
             <artifactId>OmegaPersistence</artifactId>
             <version>1.0.0</version>
         </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <version>2.6.1</version>
-        </dependency>
-        <dependency>
+       <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-search-orm</artifactId>
-            <version>5.5.2.Final</version>
+            <version>5.5.5.Final</version>
         </dependency>
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-queryparser</artifactId>
-            <version>5.3.1</version>
+            <version>5.5.3</version>
         </dependency>
     </dependencies>
     <properties>
