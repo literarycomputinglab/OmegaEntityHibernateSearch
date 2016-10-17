@@ -1,5 +1,7 @@
 package it.cnr.ilc.lc.omega.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.net.URI;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -17,8 +19,8 @@ import org.hibernate.search.annotations.IndexedEmbedded;
 @Entity
 public class Source<T extends Content> extends SuperNode {
 
-    @IndexedEmbedded(targetElement = Content.class)
     @OneToOne(targetEntity = Content.class, cascade = CascadeType.ALL)
+    @IndexedEmbedded(targetElement = Content.class, depth = 1)
     private T content;
 
     protected Source() {

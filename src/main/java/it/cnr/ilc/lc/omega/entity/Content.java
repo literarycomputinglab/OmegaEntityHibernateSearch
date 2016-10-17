@@ -1,5 +1,9 @@
 package it.cnr.ilc.lc.omega.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -7,7 +11,6 @@ import javax.persistence.OneToOne;
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.ContainedIn;
 import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Indexed;
 
 /**
  *
@@ -15,12 +18,14 @@ import org.hibernate.search.annotations.Indexed;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+
 public abstract class Content extends SuperNode {
 
     @Field(analyze = Analyze.NO)
     private final String mimetype;
 
     @ContainedIn
+    @JsonIgnore
     @OneToOne(mappedBy = "content")
     private Source<?> source;
 
@@ -52,7 +57,5 @@ public abstract class Content extends SuperNode {
     public String toString() {
         return super.toString() + " " + getMimetype(); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    
 
 }
