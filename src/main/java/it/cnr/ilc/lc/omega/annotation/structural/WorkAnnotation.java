@@ -5,6 +5,7 @@
  */
 package it.cnr.ilc.lc.omega.annotation.structural;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import it.cnr.ilc.lc.omega.entity.Annotation;
 import it.cnr.ilc.lc.omega.entity.ext.Person;
 import java.util.Date;
@@ -12,8 +13,11 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.Temporal;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
@@ -21,9 +25,11 @@ import org.hibernate.search.annotations.IndexedEmbedded;
 /**
  *
  * @author simone
+ * @author angelo
  */
 @Entity
 @Indexed
+@JsonIgnoreProperties("annotation")
 public class WorkAnnotation extends Annotation.Data {
 
     @Field
@@ -76,7 +82,8 @@ public class WorkAnnotation extends Annotation.Data {
 
     @Override
     public <E extends Annotation.Data> E get() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return (E) this;
     }
 
 }

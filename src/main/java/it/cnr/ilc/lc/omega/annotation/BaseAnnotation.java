@@ -5,6 +5,7 @@
  */
 package it.cnr.ilc.lc.omega.annotation;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import it.cnr.ilc.lc.omega.entity.Annotation;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +18,7 @@ import org.hibernate.search.annotations.Indexed;
  */
 @Entity
 @Indexed
+@JsonIgnoreProperties("annotation")
 public class BaseAnnotation extends Annotation.Data {
 
     @Field

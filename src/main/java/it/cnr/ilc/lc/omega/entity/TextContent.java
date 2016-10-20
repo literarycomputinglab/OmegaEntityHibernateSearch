@@ -1,5 +1,6 @@
 package it.cnr.ilc.lc.omega.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import org.hibernate.search.annotations.Field;
@@ -11,6 +12,7 @@ import org.hibernate.search.annotations.Indexed;
  */
 @Entity
 @Indexed
+@JsonIgnoreProperties("source")
 public class TextContent extends Content {
 
     @Field

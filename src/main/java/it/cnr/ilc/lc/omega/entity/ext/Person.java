@@ -14,6 +14,7 @@ import org.hibernate.search.annotations.Indexed;
 /**
  *
  * @author simone
+ * @author angelo
  */
 @Entity
 @Indexed

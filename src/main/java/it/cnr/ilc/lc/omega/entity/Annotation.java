@@ -1,5 +1,6 @@
 package it.cnr.ilc.lc.omega.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import it.cnr.ilc.lc.omega.exception.InvalidURIException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,6 +12,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToMany;
@@ -22,6 +24,10 @@ import org.apache.logging.log4j.Logger;
 import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
 import org.apache.lucene.analysis.core.WhitespaceTokenizerFactory;
 import org.apache.lucene.analysis.pattern.PatternReplaceCharFilterFactory;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.AnalyzerDef;
@@ -45,23 +51,26 @@ import org.hibernate.search.annotations.TokenizerDef;
         = {
             @CharFilterDef(factory = PatternReplaceCharFilterFactory.class, params
                     = {
-                @Parameter(name = "pattern", value = "[,\\.;:]"),
+                @Parameter(name = "pattern", value = "[,\\.;:]")
+                ,
                 @Parameter(name = "replacement", value = " ")
             })
         }, tokenizer = @TokenizerDef(factory = WhitespaceTokenizerFactory.class))
-
+//@JsonIgnoreProperties({"data", "relations", "loci"})
 public class Annotation<T extends Content, E extends Annotation.Data> extends Source<T> {
 
     private static final Logger log = LogManager.getLogger(Annotation.class);
 
     @IndexedEmbedded(targetElement = Annotation.Data.class) // indicazione sulla classe che deve essere indicizzata da lucene
     @ManyToOne(targetEntity = Annotation.Data.class, cascade = CascadeType.ALL)
+    @Fetch(FetchMode.JOIN)
     private E data;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<Locus> loci;
 
-    @ManyToMany
+    @ManyToMany //NON METTERE ASSOLUTAMENTE!!! (fetch = FetchType.EAGER)
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Relation> relations = new ArrayList<>();
 
     private Annotation() {
