@@ -1,8 +1,10 @@
 package it.cnr.ilc.lc.omega.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.net.URI;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
@@ -15,6 +17,7 @@ import org.hibernate.search.annotations.IndexedEmbedded;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@JsonIgnoreProperties({"annotation", "source"})
 public abstract class Locus<T extends Content> extends SuperNode implements Cloneable {
 
     public enum PointsTo {
@@ -22,7 +25,7 @@ public abstract class Locus<T extends Content> extends SuperNode implements Clon
         SOURCE, CONTENT;
     }
 
-    @ManyToOne (cascade = CascadeType.ALL)
+    @ManyToOne (cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Annotation annotation;
 
     @IndexedEmbedded
@@ -74,6 +77,11 @@ public abstract class Locus<T extends Content> extends SuperNode implements Clon
         } catch (InstantiationException | IllegalAccessException ex) {
             throw new RuntimeException(ex);
         }
+    }
+    
+    
+    public String getSourceUri() {
+        return source.getUri();
     }
 
 }

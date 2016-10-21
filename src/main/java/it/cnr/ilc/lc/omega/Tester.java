@@ -233,7 +233,7 @@ public class Tester {
             Annotation<TextContent, SimpleAnnotation> a = ba.getAnnotation();
             logger.info("BaseAnnotation a: " + a.getUri());
 
-            Iterator<Locus<TextContent>> it = a.getLoci(TextContent.class);
+            Iterator<Locus<TextContent>> it = a.getLociIterator(TextContent.class);
 
             while (it.hasNext()) {
                 TextLocus locus = it.next().get();
@@ -311,7 +311,7 @@ public class Tester {
         logger.info("Result is empty? " + results.isEmpty());
 
         for (AdvancedAnnotation result : results) {
-            Iterator<Locus<TextContent>> it = result.getAnnotation().getLoci(TextContent.class);
+            Iterator<Locus<TextContent>> it = result.getAnnotation().getLociIterator(TextContent.class);
 
             while (it.hasNext()) {
                 TextLocus locus = it.next().get();

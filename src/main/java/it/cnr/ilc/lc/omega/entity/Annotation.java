@@ -66,7 +66,7 @@ public class Annotation<T extends Content, E extends Annotation.Data> extends So
     @Fetch(FetchMode.JOIN)
     private E data;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Locus> loci;
 
     @ManyToMany //NON METTERE ASSOLUTAMENTE!!! (fetch = FetchType.EAGER)
@@ -88,7 +88,11 @@ public class Annotation<T extends Content, E extends Annotation.Data> extends So
         return loci.remove(locus);
     }
 
-    public <V extends Content> Iterator<Locus<V>> getLoci(Class<V> clazz) {
+    public List<Locus> getLoci() {
+        return  loci;
+    }
+
+    public <V extends Content> Iterator<Locus<V>> getLociIterator(Class<V> clazz) {
         return (Iterator) loci.iterator();
     }
 
