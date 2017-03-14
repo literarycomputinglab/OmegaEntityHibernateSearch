@@ -1,6 +1,5 @@
 package it.cnr.ilc.lc.omega.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import it.cnr.ilc.lc.omega.exception.InvalidURIException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,7 +20,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
 import org.apache.lucene.analysis.core.WhitespaceTokenizerFactory;
 import org.apache.lucene.analysis.pattern.PatternReplaceCharFilterFactory;
 import org.hibernate.annotations.Fetch;
@@ -89,7 +87,7 @@ public class Annotation<T extends Content, E extends Annotation.Data> extends So
     }
 
     public List<Locus> getLoci() {
-        return  loci;
+        return loci;
     }
 
     public <V extends Content> Iterator<Locus<V>> getLociIterator(Class<V> clazz) {
