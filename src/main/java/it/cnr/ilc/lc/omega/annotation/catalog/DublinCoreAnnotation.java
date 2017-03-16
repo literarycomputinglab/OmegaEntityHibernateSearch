@@ -1,0 +1,269 @@
+/*
+ * To change this license header", "choose License Headers in Project Properties.
+ * To change this template file", "choose Tools | Templates
+ * and open the template in the editor.
+ */
+package it.cnr.ilc.lc.omega.annotation.catalog;
+
+import it.cnr.ilc.lc.omega.entity.Annotation;
+import it.cnr.ilc.lc.omega.entity.ext.DateEvent;
+import java.util.Date;
+import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
+
+/**
+ *
+ * @author simone
+ */
+@Entity
+@Indexed
+public class DublinCoreAnnotation extends Annotation.Data {
+
+    //contributor ", "coverage ", "creator ", "dateEvent ", "description ", "format ", "identifier ", "language ", "publisher ", "relation ", "rights ", "source ", "subject ", "title ", "type 
+    @Field
+    private List<String> contributor;
+
+    @Field
+    private String coverage;
+
+    @Field
+    private List<String> creator;
+
+    @Field
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date created;
+
+    @Field
+    @Embedded
+    @IndexedEmbedded
+    private DateEvent dateEvent;
+
+    @Field
+    private String description;
+
+    @Field
+    private String format;
+
+    @Field
+    private String identifier;
+
+    @Field
+    private String publisher;
+
+    @IndexedEmbedded
+    @OneToMany(cascade = CascadeType.ALL)
+    @Embedded
+    private List<DublinCoreRelation> relation;
+
+    @Field
+    private String rights;
+
+    @Field
+    private String source;
+
+    @Field
+    private List<String> subject;
+
+    @Field
+    private String title;
+
+    @Field
+    private String type;
+
+    public List<String> getContributor() {
+        return contributor;
+    }
+
+    void setContributor(List<String> contributor) {
+        this.contributor = contributor;
+    }
+
+    public String getCoverage() {
+        return coverage;
+    }
+
+    void setCoverage(String coverage) {
+        this.coverage = coverage;
+    }
+
+    public List<String> getCreator() {
+        return creator;
+    }
+
+    void setCreator(List<String> creator) {
+        this.creator = creator;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    void setCreated(Date created) {
+        this.created = created;
+    }
+
+    public DateEvent getDateEvent() {
+        return dateEvent;
+    }
+
+    void setDateEvent(DateEvent dateEvent) {
+        this.dateEvent = dateEvent;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getFormat() {
+        return format;
+    }
+
+    void setFormat(String format) {
+        this.format = format;
+    }
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    void setIdentifier(String identifier) {
+        this.identifier = identifier;
+    }
+
+    public String getPublisher() {
+        return publisher;
+    }
+
+    void setPublisher(String publisher) {
+        this.publisher = publisher;
+    }
+
+    public List<DublinCoreRelation> getRelation() {
+        return relation;
+    }
+
+    void setRelation(List<DublinCoreRelation> relation) {
+        this.relation = relation;
+    }
+
+    public String getRights() {
+        return rights;
+    }
+
+    void setRights(String rights) {
+        this.rights = rights;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    void setSource(String source) {
+        this.source = source;
+    }
+
+    public List<String> getSubject() {
+        return subject;
+    }
+
+    void setSubject(List<String> subject) {
+        this.subject = subject;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    void setType(String type) {
+        this.type = type;
+    }
+
+    @Override
+    public <E extends Annotation.Data> E get() {
+        return (E) this;
+    }
+
+    @Embeddable
+    public static class DublinCoreRelation {
+
+        private final String predicate;
+        private final String object;
+
+        public DublinCoreRelation(String p, String o) {
+            predicate = p;
+            object = o;
+            
+        }
+
+        public String getPredicate() {
+            return predicate;
+        }
+
+        public String getObject() {
+            return object;
+        }
+        
+        
+
+    }
+
+    /**
+     *
+     */
+    public static enum DCTerms {
+
+        ABSTRACT("abstract"), ACCESSRIGHTS("accessRight"), ACCRUALMETHOD("accrualMethod"),
+        ACCRUALPERIODICITY("accrualPeriodicity"), ACCRUALPOLICY("accrualPolicy"),
+        ALTERNATIVE("alternative"), AUDIENCE("audience"), AVAILABLE("available"),
+        BIBLIOGRAPHICCITATION("bibliographicCitation"), CONFORMSTO("conformsTo"),
+        CONTRIBUTOR("contributor"), COVERAGE("coverage"), CREATED("created"),
+        CREATOR("creator"), DATE("date"), DATEACCEPTED("dateAccepted"),
+        DATECOPYRIGHTED("dateCopyrighted"), DATESUBMITTED("dateSubmitted"),
+        DESCRIPTION("description"), EDUCATIONLEVEL("educationLevel"), EXTENT("extent"),
+        FORMAT("format"), HASFORMAT("hasFormat"), HASPART("hasPart"),
+        HASVERSION("hasVersion"), IDENTIFIER("identifier"), INSTRUCTIONALMETHOD("instructionalMethod"),
+        ISFORMATOF("isFormatOf"), ISPARTOF("isPartOf"), ISREFERENCEDBY("isReferencedBy"),
+        ISREPLACEDBY("isReplacedBy"), ISREQUIREDBY("isRequiredBy"), ISSUED("issued"),
+        ISVERSIONOF("isVersionOf"), LANGUAGE("language"), LICENSE("license"), MEDIATOR("mediator"),
+        MEDIUM("medium"), MODIFIED("modified"), PROVENANCE("provenance"), PUBLISHER("publisher"),
+        REFERENCES("references"), RELATION("relation"), REPLACES("replaces"),
+        REQUIRES("requires"), RIGHTS("rights"), RIGHTSHOLDER("rightsHolder"), SOURCE("source"),
+        SPATIAL("spatial"), SUBJECT("subject"), TABLEOFCONTENTS("tableOfContents"),
+        TEMPORAL("temporal"), TITLE("title"), TYPE("type"), VALID("valid");
+
+        String value;
+
+        DCTerms(String s) {
+            value = s;
+        }
+
+        @Override
+        public String toString() {
+            return value;
+        }
+
+    }
+
+}

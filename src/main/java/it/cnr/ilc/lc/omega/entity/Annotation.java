@@ -18,6 +18,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.lucene.analysis.core.WhitespaceTokenizerFactory;
@@ -131,6 +132,7 @@ public class Annotation<T extends Content, E extends Annotation.Data> extends So
         private String annotationAuthor;
 
         @Field
+        @Temporal(javax.persistence.TemporalType.DATE)
         private Date creationDate;
 
         public final void setIndexField(String indexField) {

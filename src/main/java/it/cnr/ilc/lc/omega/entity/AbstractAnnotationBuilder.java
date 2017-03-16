@@ -17,7 +17,7 @@ public abstract class AbstractAnnotationBuilder<T extends Annotation.Data> imple
     protected Date creationDate;
 
     /**
-     * DA UTILIZZARE NEL BULDER CONCRETO public BaseAnnotationBuilder URI(URI
+     * DA UTILIZZARE NEL BUILDER CONCRETO public BaseAnnotationBuilder URI(URI
      * uri) { setURI(uri); return this; }
      */
     @Override
