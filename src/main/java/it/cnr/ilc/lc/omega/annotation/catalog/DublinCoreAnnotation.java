@@ -7,15 +7,13 @@ package it.cnr.ilc.lc.omega.annotation.catalog;
 
 import it.cnr.ilc.lc.omega.entity.Annotation;
 import it.cnr.ilc.lc.omega.entity.ext.DateEvent;
+import it.cnr.ilc.lc.omega.entity.ext.StringValue;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
@@ -30,22 +28,23 @@ import org.hibernate.search.annotations.IndexedEmbedded;
 public class DublinCoreAnnotation extends Annotation.Data {
 
     //contributor ", "coverage ", "creator ", "dateEvent ", "description ", "format ", "identifier ", "language ", "publisher ", "relation ", "rights ", "source ", "subject ", "title ", "type 
-    @Field
-    private List<String> contributor;
+    @IndexedEmbedded
+    @ElementCollection
+    private List<StringValue> contributor;
 
     @Field
     private String coverage;
 
-    @Field
-    private List<String> creator;
+    @IndexedEmbedded
+    @ElementCollection
+    private List<StringValue> creator;
 
     @Field
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date created;
 
-    @Field
     @Embedded
-    @IndexedEmbedded
+    @IndexedEmbedded(includePaths = {"event"})
     private DateEvent dateEvent;
 
     @Field
@@ -61,8 +60,8 @@ public class DublinCoreAnnotation extends Annotation.Data {
     private String publisher;
 
     @IndexedEmbedded
-    @OneToMany(cascade = CascadeType.ALL)
     @Embedded
+    @ElementCollection
     private List<DublinCoreRelation> relation;
 
     @Field
@@ -71,8 +70,9 @@ public class DublinCoreAnnotation extends Annotation.Data {
     @Field
     private String source;
 
-    @Field
-    private List<String> subject;
+    @IndexedEmbedded
+    @ElementCollection
+    private List<StringValue> subject;
 
     @Field
     private String title;
@@ -80,11 +80,11 @@ public class DublinCoreAnnotation extends Annotation.Data {
     @Field
     private String type;
 
-    public List<String> getContributor() {
+    public List<StringValue> getContributor() {
         return contributor;
     }
 
-    void setContributor(List<String> contributor) {
+    void setContributor(List<StringValue> contributor) {
         this.contributor = contributor;
     }
 
@@ -96,11 +96,11 @@ public class DublinCoreAnnotation extends Annotation.Data {
         this.coverage = coverage;
     }
 
-    public List<String> getCreator() {
+    public List<StringValue> getCreator() {
         return creator;
     }
 
-    void setCreator(List<String> creator) {
+    void setCreator(List<StringValue> creator) {
         this.creator = creator;
     }
 
@@ -176,11 +176,11 @@ public class DublinCoreAnnotation extends Annotation.Data {
         this.source = source;
     }
 
-    public List<String> getSubject() {
+    public List<StringValue> getSubject() {
         return subject;
     }
 
-    void setSubject(List<String> subject) {
+    void setSubject(List<StringValue> subject) {
         this.subject = subject;
     }
 
@@ -208,13 +208,22 @@ public class DublinCoreAnnotation extends Annotation.Data {
     @Embeddable
     public static class DublinCoreRelation {
 
-        private final String predicate;
-        private final String object;
+        @Field
+        private String predicate;
 
+        @Field
+        private String object;
+
+        protected DublinCoreRelation() {
+            this.predicate = null;
+            this.object = null;
+        }
+
+        
         public DublinCoreRelation(String p, String o) {
             predicate = p;
             object = o;
-            
+
         }
 
         public String getPredicate() {
@@ -224,9 +233,16 @@ public class DublinCoreAnnotation extends Annotation.Data {
         public String getObject() {
             return object;
         }
-        
-        
 
+        public void setPredicate(String predicate) {
+            this.predicate = predicate;
+        }
+
+        public void setObject(String object) {
+            this.object = object;
+        }
+
+        
     }
 
     /**

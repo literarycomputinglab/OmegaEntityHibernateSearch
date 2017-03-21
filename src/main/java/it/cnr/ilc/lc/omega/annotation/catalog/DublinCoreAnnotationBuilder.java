@@ -7,6 +7,7 @@ package it.cnr.ilc.lc.omega.annotation.catalog;
 
 import it.cnr.ilc.lc.omega.entity.AbstractAnnotationBuilder;
 import it.cnr.ilc.lc.omega.entity.ext.DateEvent;
+import it.cnr.ilc.lc.omega.entity.ext.StringValue;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,7 +56,6 @@ public class DublinCoreAnnotationBuilder extends AbstractAnnotationBuilder<Dubli
 
     public DublinCoreAnnotationBuilder URI(URI uri) {
         setURI(uri);
-        super.setURI(uri);
         return this;
     }
 
@@ -138,44 +138,59 @@ public class DublinCoreAnnotationBuilder extends AbstractAnnotationBuilder<Dubli
     public DublinCoreAnnotation build(DublinCoreAnnotation extension) {
 
         extension.setAnnotationAuthor(annotationAuthor);
-        extension.setContributor(Arrays.asList(contributor));
+        extension.setContributor(arrayToStringValue(contributor));
         extension.setCoverage(coverage);
         extension.setCreated(created);
-        extension.setCreator(Arrays.asList(creator));
+        extension.setCreator(arrayToStringValue(creator));
         extension.setDescription(description);
         extension.setFormat(format);
         extension.setIdentifier(identifier);
         extension.setPublisher(publisher);
-        extension.setRelation((new RelationCreator()).addParser(new RelationParser() {
+        extension.setRelation((new RelationCreator()).addInput(relation).addParser(new RelationParser() {
             @Override
             public List<DublinCoreAnnotation.DublinCoreRelation> parse(String[] input) {
 
                 List<DublinCoreAnnotation.DublinCoreRelation> rels = new ArrayList<>();
-                for (int i = 0; i < input.length; i++) {
-                    try {
-                        int split = input[i].indexOf(":");
-                        if (split != -1) {
-                            String rel = input[i].substring(0, split);
-                            String value = input[i].substring(split + 1, input[i].length());
-                            rels.add(new DublinCoreAnnotation.DublinCoreRelation(rel, value));
-                        } else {
-                            throw new UnsupportedOperationException("Malformed string relation: expected \"predicate : object\", found \"" + input[i] + "\"");
+                if (null != input) {
+                    for (int i = 0; i < input.length; i++) {
+                        try {
+                            int split = input[i].indexOf(":");
+                            if (split != -1) {
+                                String rel = input[i].substring(0, split);
+                                String value = input[i].substring(split + 1, input[i].length());
+                                rels.add(new DublinCoreAnnotation.DublinCoreRelation(rel, value));
+                            } else {
+                                throw new UnsupportedOperationException("Malformed string relation: expected \"predicate : object\", found \"" + input[i] + "\"");
+                            }
+                        } catch (UnsupportedOperationException e) {
+                            log.error(e);
                         }
-                    } catch (UnsupportedOperationException e) {
-                        log.error(e);
-                    }
 
+                    }
                 }
                 return rels;
             }
         }).create());
         extension.setRights(rights);
         extension.setSource(source);
-        extension.setSubject(Arrays.asList(subject));
+        extension.setSubject(arrayToStringValue(subject));
         extension.setTitle(title);
         extension.setType(type);
 
         return extension;
+    }
+
+    private List<StringValue> arrayToStringValue(String[] array) {
+
+        List<StringValue> losv = new ArrayList<>();
+
+        if (null != array) {
+            for (int i = 0; i < array.length; i++) {
+                losv.add(new StringValue(array[i]));
+            }
+        }
+
+        return losv;
     }
 
 }

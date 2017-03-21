@@ -11,14 +11,12 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Temporal;
 import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Indexed;
 
 /**
  * Coppia data-event per DublinCore
  *
  * @author simone
  */
-
 @Embeddable
 public class DateEvent extends SuperNode {
 
@@ -30,5 +28,22 @@ public class DateEvent extends SuperNode {
     @Field
     @Column(length = 1024)
     String event;
+
+    protected DateEvent() {
+    }
+
+    public DateEvent(Date date, String event) {
+        this.date = date;
+        this.event = event;
+    }
+
+    
+    public Date getDate() {
+        return date;
+    }
+
+    public String getEvent() {
+        return event;
+    }
 
 }
