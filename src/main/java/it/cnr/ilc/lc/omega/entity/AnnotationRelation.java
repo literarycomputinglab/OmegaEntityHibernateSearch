@@ -8,7 +8,7 @@ import javax.persistence.ManyToOne;
  * @author oakgen
  */
 @Entity
-public class Relation extends SuperNode {
+public class AnnotationRelation extends SuperNode {
 
     final private String type;
 
@@ -18,7 +18,7 @@ public class Relation extends SuperNode {
     @ManyToOne
     private Annotation targetAnnotation;
 
-    private Relation(Enum type) {
+    private AnnotationRelation(Enum type) {
         this.type = type.name();
     }
 
@@ -42,8 +42,8 @@ public class Relation extends SuperNode {
         return type;
     }
 
-    public static Relation newInstance(Enum type) {
-        Relation r = new Relation(type);
+    public static AnnotationRelation newInstance(Enum type) {
+        AnnotationRelation r = new AnnotationRelation(type);
         return r;
     }
 

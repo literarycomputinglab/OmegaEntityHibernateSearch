@@ -70,7 +70,7 @@ public class Annotation<T extends Content, E extends Annotation.Data> extends So
 
     @ManyToMany //NON METTERE ASSOLUTAMENTE!!! (fetch = FetchType.EAGER)
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Relation> relations = new ArrayList<>();
+    private List<AnnotationRelation> relations = new ArrayList<>();
 
     private Annotation() {
     }
@@ -103,15 +103,15 @@ public class Annotation<T extends Content, E extends Annotation.Data> extends So
         this.data = data;
     }
 
-    public Iterator<Relation> getRelations() {
+    public Iterator<AnnotationRelation> getRelations() {
         return relations.iterator();
     }
 
-    public void addRelation(Relation relation) {
+    public void addRelation(AnnotationRelation relation) {
         relations.add(relation);
     }
 
-    public boolean removeRelation(Relation relation) {
+    public boolean removeRelation(AnnotationRelation relation) {
         return relations.remove(relation);
     }
 
