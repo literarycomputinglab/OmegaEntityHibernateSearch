@@ -35,13 +35,9 @@ public class DublinCoreAnnotation extends Annotation.Data {
     @Field
     private String coverage;
 
-    @IndexedEmbedded
-    @ElementCollection
-    private List<StringValue> creator;
-
     @Field
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date created;
+    private String creator;
+
 
     @Embedded
     @IndexedEmbedded(includePaths = {"event"})
@@ -56,6 +52,9 @@ public class DublinCoreAnnotation extends Annotation.Data {
     @Field
     private String identifier;
 
+    @Field
+    private String language;
+    
     @Field
     private String publisher;
 
@@ -96,20 +95,12 @@ public class DublinCoreAnnotation extends Annotation.Data {
         this.coverage = coverage;
     }
 
-    public List<StringValue> getCreator() {
+    public String getCreator() {
         return creator;
     }
 
-    void setCreator(List<StringValue> creator) {
+    void setCreator(String creator) {
         this.creator = creator;
-    }
-
-    public Date getCreated() {
-        return created;
-    }
-
-    void setCreated(Date created) {
-        this.created = created;
     }
 
     public DateEvent getDateEvent() {
@@ -142,6 +133,14 @@ public class DublinCoreAnnotation extends Annotation.Data {
 
     void setIdentifier(String identifier) {
         this.identifier = identifier;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
 
     public String getPublisher() {

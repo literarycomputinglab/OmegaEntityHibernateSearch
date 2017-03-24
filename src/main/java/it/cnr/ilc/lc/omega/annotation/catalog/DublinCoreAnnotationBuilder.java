@@ -10,7 +10,6 @@ import it.cnr.ilc.lc.omega.entity.ext.DateEvent;
 import it.cnr.ilc.lc.omega.entity.ext.StringValue;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
@@ -24,13 +23,16 @@ public class DublinCoreAnnotationBuilder extends AbstractAnnotationBuilder<Dubli
 
     private static final Logger log = LogManager.getLogger(DublinCoreAnnotationBuilder.class);
 
+    private final String NAN = "NaN property";
+    private final String[] NANARRAY = new String[]{"NaN property"};
+    private final Date NANDATE = null;
+    private final DateEvent NANEVENT = new DateEvent(NANDATE, NAN);
+
     private String[] contributor;
 
     private String coverage;
 
-    private String[] creator;
-
-    private Date created;
+    private String creator;
 
     private DateEvent dateEvent;
 
@@ -40,6 +42,8 @@ public class DublinCoreAnnotationBuilder extends AbstractAnnotationBuilder<Dubli
 
     private String identifier;
 
+    private String language;
+    
     private String publisher;
 
     private String[] relation; // List<DublinCoreAnnotation.DublinCoreRelation>
@@ -69,15 +73,11 @@ public class DublinCoreAnnotationBuilder extends AbstractAnnotationBuilder<Dubli
         return this;
     }
 
-    public DublinCoreAnnotationBuilder creator(String[] creator) {
+    public DublinCoreAnnotationBuilder creator(String creator) {
         this.creator = creator;
         return this;
     }
 
-    public DublinCoreAnnotationBuilder created(Date created) {
-        this.created = created;
-        return this;
-    }
 
     public DublinCoreAnnotationBuilder dateEvent(DateEvent dateEvent) {
         this.dateEvent = dateEvent;
@@ -96,6 +96,11 @@ public class DublinCoreAnnotationBuilder extends AbstractAnnotationBuilder<Dubli
 
     public DublinCoreAnnotationBuilder identifier(String identifier) {
         this.identifier = identifier;
+        return this;
+    } 
+    
+    public DublinCoreAnnotationBuilder language(String language) {
+        this.language = language;
         return this;
     }
 
@@ -137,16 +142,17 @@ public class DublinCoreAnnotationBuilder extends AbstractAnnotationBuilder<Dubli
     @Override
     public DublinCoreAnnotation build(DublinCoreAnnotation extension) {
 
-        extension.setAnnotationAuthor(annotationAuthor);
-        extension.setContributor(arrayToStringValue(contributor));
-        extension.setCoverage(coverage);
-        extension.setCreated(created);
-        extension.setCreator(arrayToStringValue(creator));
-        extension.setDescription(description);
-        extension.setFormat(format);
-        extension.setIdentifier(identifier);
-        extension.setPublisher(publisher);
-        extension.setRelation((new RelationCreator()).addInput(relation).addParser(new RelationParser() {
+        extension.setAnnotationAuthor(check(annotationAuthor));
+        extension.setContributor(arrayToListStringValue(check(contributor)));
+        extension.setCoverage(check(coverage));
+        extension.setCreator(check(creator));
+        extension.setDateEvent(check(dateEvent));
+        extension.setDescription(check(description));
+        extension.setFormat(check(format));
+        extension.setIdentifier(check(identifier));
+        extension.setLanguage(check(language));
+        extension.setPublisher(check(publisher));
+        extension.setRelation((new RelationCreator()).addInput(check(relation)).addParser(new RelationParser() {
             @Override
             public List<DublinCoreAnnotation.DublinCoreRelation> parse(String[] input) {
 
@@ -171,16 +177,35 @@ public class DublinCoreAnnotationBuilder extends AbstractAnnotationBuilder<Dubli
                 return rels;
             }
         }).create());
-        extension.setRights(rights);
-        extension.setSource(source);
-        extension.setSubject(arrayToStringValue(subject));
-        extension.setTitle(title);
-        extension.setType(type);
+        extension.setRights(check(rights));
+        extension.setSource(check(source));
+        extension.setSubject(arrayToListStringValue(check(subject)));
+        extension.setTitle(check(title));
+        extension.setType(check(type));
 
         return extension;
     }
 
-    private List<StringValue> arrayToStringValue(String[] array) {
+    private <T> T check(T t) {
+
+        T ret = null;
+        if (t != null) {
+            ret = t;
+        } else {
+            if (t instanceof String) {
+                ret = (T) NAN;
+            } else if (t instanceof String[]) {
+                ret = (T) NANARRAY;
+            } else if (t instanceof Date) {
+                ret = (T) NANDATE;
+            } else if (t instanceof DateEvent) {
+                ret = (T) NANEVENT;
+            }
+        }
+        return ret;
+    }
+
+    private List<StringValue> arrayToListStringValue(String[] array) {
 
         List<StringValue> losv = new ArrayList<>();
 

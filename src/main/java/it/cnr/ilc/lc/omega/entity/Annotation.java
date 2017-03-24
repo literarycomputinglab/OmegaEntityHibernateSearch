@@ -68,7 +68,7 @@ public class Annotation<T extends Content, E extends Annotation.Data> extends So
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Locus> loci;
 
-    @ManyToMany //NON METTERE ASSOLUTAMENTE!!! (fetch = FetchType.EAGER)
+    @ManyToMany(cascade=CascadeType.ALL) //NON METTERE ASSOLUTAMENTE!!! (fetch = FetchType.EAGER)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<AnnotationRelation> relations = new ArrayList<>();
 
