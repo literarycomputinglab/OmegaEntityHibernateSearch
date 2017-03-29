@@ -73,7 +73,7 @@ public class Tester {
 
         Annotation<TextContent, SimpleAnnotation> annotation
                 = Annotation.newAnnotation("base",
-                        new SimpleAnnotationBuilder().uri(URI.create("/base/annotation/uri/004")).content("Un esempio di annotazione di base"));
+                        new SimpleAnnotationBuilder().URI(URI.create("/base/annotation/uri/004")).content("Un esempio di annotazione di base"));
 
         annotation.addLocus(locus);
 
@@ -112,7 +112,7 @@ public class Tester {
         Annotation<TextContent, AdvancedAnnotation> annotation
                 = Annotation.newAnnotation("advanced",
                         new AdvancedAnnotationBuilder()
-                        .uri(URI.create("/advanced/annotation/uri/004"))
+                        .URI(URI.create("/advanced/annotation/uri/004"))
                         .note("Un esempio di annotazione ADVANCED")
                         .date(calendar.getTime())
                         .author("Bobbe Nero"));

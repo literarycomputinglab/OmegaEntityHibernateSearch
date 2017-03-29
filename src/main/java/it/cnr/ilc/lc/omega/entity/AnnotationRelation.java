@@ -1,5 +1,6 @@
 package it.cnr.ilc.lc.omega.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
@@ -12,10 +13,10 @@ public class AnnotationRelation extends SuperNode {
 
     final private String type;
 
-    @ManyToOne
+    @ManyToOne (cascade = CascadeType.ALL)
     private Annotation sourceAnnotation;
 
-    @ManyToOne
+    @ManyToOne (cascade = CascadeType.ALL)
     private Annotation targetAnnotation;
 
     private AnnotationRelation(Enum type) {

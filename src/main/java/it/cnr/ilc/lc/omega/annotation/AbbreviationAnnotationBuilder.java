@@ -7,6 +7,7 @@ package it.cnr.ilc.lc.omega.annotation;
 
 import it.cnr.ilc.lc.omega.entity.AbstractAnnotationBuilder;
 import java.net.URI;
+import java.util.Date;
 
 /**
  *
@@ -42,6 +43,16 @@ public class AbbreviationAnnotationBuilder extends AbstractAnnotationBuilder<Abb
         extension.setAbbrevationExpansion(abbrevationExpansion);
         extension.setIndexField(abbrevation + " " + abbrevationExpansion);
         return extension;
+    }
+
+    @Override
+    public AbstractAnnotationBuilder<AbbreviationAnnotation> annotationAuthor(String annotationAuthor) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public AbstractAnnotationBuilder<AbbreviationAnnotation> creationDate(Date creationDate) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

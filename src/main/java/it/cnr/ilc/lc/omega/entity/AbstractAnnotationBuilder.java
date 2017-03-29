@@ -17,16 +17,22 @@ public abstract class AbstractAnnotationBuilder<T extends Annotation.Data> imple
 
     private static Logger log = LogManager.getLogger(AbstractAnnotationBuilder.class);
 
-    protected URI uri;
+    private URI uri;
 
     protected String annotationAuthor;
 
     protected Date creationDate;
 
-    /**
+    /*
      * DA UTILIZZARE NEL BUILDER CONCRETO public BaseAnnotationBuilder URI(URI
      * uri) { setURI(uri); return this; }
      */
+    public abstract AbstractAnnotationBuilder<T> URI(URI uri);
+
+    public abstract AbstractAnnotationBuilder<T> annotationAuthor(String annotationAuthor);
+
+    public abstract AbstractAnnotationBuilder<T> creationDate(Date creationDate);
+
     @Override
     final public void setURI(URI uri) {
         this.uri = uri;
@@ -57,21 +63,21 @@ public abstract class AbstractAnnotationBuilder<T extends Annotation.Data> imple
         for (int i = 0; i < fields.length; i++) {
             if (!Logger.class.equals(fields[i].getType())) {
                 try {
-                    Object filedValue =  FieldUtils.readField(fields[i], this, true);
+                    Object filedValue = FieldUtils.readField(fields[i], this, true);
                     String fieldName = fields[i].getName();
                     if (i == fields.length - 1) {
                         if (fields[i].getType().isArray()) {
-                            sb.append(String.format("%s => %s", fieldName, Arrays.toString((Object [])filedValue )));
+                            sb.append(String.format("%s => %s", fieldName, Arrays.toString((Object[]) filedValue)));
 
                         } else {
                             sb.append(String.format("%s => %s", fieldName, filedValue));
                         }
                     } else {
                         if (fields[i].getType().isArray()) {
-                            sb.append(String.format("%s => %s, ", fieldName, Arrays.toString((Object [])filedValue )));
+                            sb.append(String.format("%s => %s, ", fieldName, Arrays.toString((Object[]) filedValue)));
 
                         } else {
-                            sb.append(String.format("%s => %s, ", fieldName,  filedValue));
+                            sb.append(String.format("%s => %s, ", fieldName, filedValue));
                         }
                     }
                 } catch (IllegalArgumentException | IllegalAccessException ex) {

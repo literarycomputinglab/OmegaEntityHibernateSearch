@@ -43,7 +43,7 @@ public class DublinCoreAnnotationBuilder extends AbstractAnnotationBuilder<Dubli
     private String identifier;
 
     private String language;
-    
+
     private String publisher;
 
     private String[] relation; // List<DublinCoreAnnotation.DublinCoreRelation>
@@ -58,8 +58,22 @@ public class DublinCoreAnnotationBuilder extends AbstractAnnotationBuilder<Dubli
 
     private String type;
 
+   
+    @Override
     public DublinCoreAnnotationBuilder URI(URI uri) {
         setURI(uri);
+        return this;
+    }
+
+    @Override
+    public AbstractAnnotationBuilder<DublinCoreAnnotation> annotationAuthor(String annotationAuthor) {
+        setAnnotationAuthor(annotationAuthor);
+        return this;
+    }
+
+    @Override
+    public AbstractAnnotationBuilder<DublinCoreAnnotation> creationDate(Date creationDate) {
+        setCreationDate(creationDate);
         return this;
     }
 
@@ -77,7 +91,6 @@ public class DublinCoreAnnotationBuilder extends AbstractAnnotationBuilder<Dubli
         this.creator = creator;
         return this;
     }
-
 
     public DublinCoreAnnotationBuilder dateEvent(DateEvent dateEvent) {
         this.dateEvent = dateEvent;
@@ -97,8 +110,8 @@ public class DublinCoreAnnotationBuilder extends AbstractAnnotationBuilder<Dubli
     public DublinCoreAnnotationBuilder identifier(String identifier) {
         this.identifier = identifier;
         return this;
-    } 
-    
+    }
+
     public DublinCoreAnnotationBuilder language(String language) {
         this.language = language;
         return this;

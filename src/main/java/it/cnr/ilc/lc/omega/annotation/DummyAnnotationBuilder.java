@@ -7,6 +7,7 @@ package it.cnr.ilc.lc.omega.annotation;
 
 import it.cnr.ilc.lc.omega.entity.AbstractAnnotationBuilder;
 import java.net.URI;
+import java.util.Date;
 
 /**
  *
@@ -23,5 +24,15 @@ public class DummyAnnotationBuilder  extends AbstractAnnotationBuilder<DummyAnno
     public DummyAnnotationBuilder URI(URI uri) {
         setURI(uri);
         return this;
+    }
+
+    @Override
+    public AbstractAnnotationBuilder<DummyAnnotation> annotationAuthor(String annotationAuthor) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public AbstractAnnotationBuilder<DummyAnnotation> creationDate(Date creationDate) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

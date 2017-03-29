@@ -113,6 +113,11 @@ public class WorkAnnotationBuilder extends AbstractAnnotationBuilder<WorkAnnotat
     public String toString() {
         return "title=(" + title + "), authors=("+ Arrays.toString(authors) +
                 ") pubblicationDate=(" + publicationDate + "), info=(" + info + ")"
-                + ", uri=(" + uri + ")";
+                + ", uri=(" + getUri() + ")";
+    }
+
+    @Override
+    public AbstractAnnotationBuilder<WorkAnnotation> creationDate(Date creationDate) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

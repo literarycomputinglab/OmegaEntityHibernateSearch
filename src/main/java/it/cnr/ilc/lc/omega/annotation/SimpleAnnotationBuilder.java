@@ -7,6 +7,7 @@ package it.cnr.ilc.lc.omega.annotation;
 
 import it.cnr.ilc.lc.omega.entity.AbstractAnnotationBuilder;
 import java.net.URI;
+import java.util.Date;
 
 /**
  *
@@ -21,7 +22,8 @@ public class SimpleAnnotationBuilder extends AbstractAnnotationBuilder<SimpleAnn
         return this;
     }
     
-    public SimpleAnnotationBuilder uri (URI aUri) {
+    @Override
+    public SimpleAnnotationBuilder URI (URI aUri) {
         
         this.setURI(aUri);
         return this;
@@ -35,6 +37,16 @@ public class SimpleAnnotationBuilder extends AbstractAnnotationBuilder<SimpleAnn
         
         return extension;
         
+    }
+
+    @Override
+    public AbstractAnnotationBuilder<SimpleAnnotation> annotationAuthor(String annotationAuthor) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public AbstractAnnotationBuilder<SimpleAnnotation> creationDate(Date creationDate) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     

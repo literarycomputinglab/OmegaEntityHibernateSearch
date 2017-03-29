@@ -34,7 +34,8 @@ public class AdvancedAnnotationBuilder extends AbstractAnnotationBuilder<Advance
         return this;
     }
 
-    public AdvancedAnnotationBuilder uri(URI aUri) {
+    @Override
+    public AdvancedAnnotationBuilder URI(URI aUri) {
 
         this.setURI(aUri);
         return this;
@@ -51,5 +52,15 @@ public class AdvancedAnnotationBuilder extends AbstractAnnotationBuilder<Advance
 
         return extension;
 
+    }
+
+    @Override
+    public AbstractAnnotationBuilder<AdvancedAnnotation> annotationAuthor(String annotationAuthor) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public AbstractAnnotationBuilder<AdvancedAnnotation> creationDate(Date creationDate) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
