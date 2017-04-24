@@ -8,13 +8,13 @@ package it.cnr.ilc.lc.omega.annotation.catalog;
 import it.cnr.ilc.lc.omega.entity.Annotation;
 import it.cnr.ilc.lc.omega.entity.ext.DateEvent;
 import it.cnr.ilc.lc.omega.entity.ext.StringValue;
-import java.util.Date;
 import java.util.List;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.Temporal;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
@@ -29,7 +29,8 @@ public class DublinCoreAnnotation extends Annotation.Data {
 
     //contributor ", "coverage ", "creator ", "dateEvent ", "description ", "format ", "identifier ", "language ", "publisher ", "relation ", "rights ", "source ", "subject ", "title ", "type 
     @IndexedEmbedded
-    @ElementCollection
+    @ElementCollection //(fetch = FetchType.EAGER)
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<StringValue> contributor;
 
     @Field
@@ -37,7 +38,6 @@ public class DublinCoreAnnotation extends Annotation.Data {
 
     @Field
     private String creator;
-
 
     @Embedded
     @IndexedEmbedded(includePaths = {"event"})
@@ -54,13 +54,14 @@ public class DublinCoreAnnotation extends Annotation.Data {
 
     @Field
     private String language;
-    
+
     @Field
     private String publisher;
 
     @IndexedEmbedded
     @Embedded
-    @ElementCollection
+    @ElementCollection //(fetch = FetchType.EAGER)
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<DublinCoreRelation> relation;
 
     @Field
@@ -70,7 +71,8 @@ public class DublinCoreAnnotation extends Annotation.Data {
     private String source;
 
     @IndexedEmbedded
-    @ElementCollection
+    @ElementCollection //(fetch = FetchType.EAGER)
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<StringValue> subject;
 
     @Field
@@ -218,7 +220,6 @@ public class DublinCoreAnnotation extends Annotation.Data {
             this.object = null;
         }
 
-        
         public DublinCoreRelation(String p, String o) {
             predicate = p;
             object = o;
@@ -241,7 +242,6 @@ public class DublinCoreAnnotation extends Annotation.Data {
             this.object = object;
         }
 
-        
     }
 
     /**

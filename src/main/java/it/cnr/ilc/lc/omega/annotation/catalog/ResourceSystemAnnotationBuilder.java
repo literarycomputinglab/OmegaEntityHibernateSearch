@@ -70,8 +70,8 @@ public class ResourceSystemAnnotationBuilder extends AbstractAnnotationBuilder<R
         return this;
     }
 
-    public ResourceSystemAnnotationBuilder type(String type) {
-        this.type = type;
+    public ResourceSystemAnnotationBuilder type(ResourceSystemAnnotationType type) {
+        this.type = type.name();
         return this;
     }
 

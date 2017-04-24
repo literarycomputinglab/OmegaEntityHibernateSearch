@@ -1,5 +1,6 @@
 package it.cnr.ilc.lc.omega.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -37,6 +38,7 @@ public class AnnotationRelation extends SuperNode {
         this.targetAnnotation = targetAnnotation;
     }
 
+    @JsonIgnore
     public Annotation getSourceAnnotation() {
         return sourceAnnotation;
     }

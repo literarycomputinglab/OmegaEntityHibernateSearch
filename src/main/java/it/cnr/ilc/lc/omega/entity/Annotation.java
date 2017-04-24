@@ -1,5 +1,6 @@
 package it.cnr.ilc.lc.omega.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import it.cnr.ilc.lc.omega.exception.InvalidURIException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -151,6 +152,7 @@ public class Annotation<T extends Content, E extends Annotation.Data> extends So
             this.annotation = ann;
         }
 
+        @JsonIgnore
         public final Annotation getAnnotation() {
 
             return this.annotation;
