@@ -26,6 +26,8 @@ import org.apache.lucene.analysis.core.WhitespaceTokenizerFactory;
 import org.apache.lucene.analysis.pattern.PatternReplaceCharFilterFactory;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.GenerationTime;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.search.annotations.Analyze;
@@ -134,6 +136,7 @@ public class Annotation<T extends Content, E extends Annotation.Data> extends So
 
         @Field
         @Temporal(javax.persistence.TemporalType.DATE)
+        @Generated(GenerationTime.INSERT) 
         private Date creationDate;
 
         public final void setIndexField(String indexField) {

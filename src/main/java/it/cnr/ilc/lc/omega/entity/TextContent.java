@@ -21,6 +21,7 @@ public class TextContent extends Content {
 
     TextContent() {
         super("text/plain");
+        this.text = "";
     }
 
     public String getText() {

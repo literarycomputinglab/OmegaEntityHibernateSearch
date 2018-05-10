@@ -1,5 +1,6 @@
 package it.cnr.ilc.lc.omega.entity;
 
+import it.cnr.ilc.lc.omega.utils.Utils;
 import java.net.URI;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -38,16 +39,14 @@ public class Source<T extends Content> extends SuperNode {
 
     public static <T extends Content> Source<T> sourceOf(Class<T> clazz, URI uri) {
         Source<T> newSource = new Source<>();
-        newSource.setUri(uri.toASCIIString());
+
+        newSource.setUri(Utils.trailingSlash(uri));
         return newSource;
     }
 
     @Override
     public String toString() {
-        return super.toString() + " " + ((null== getContent())?"No Content!":getContent().toString());
+        return super.toString() + " " + ((null == getContent()) ? "No Content!" : getContent().toString());
     }
-    
-    
-    
 
 }

@@ -18,6 +18,8 @@ import javax.persistence.TemporalType;
 import javax.persistence.Version;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.GenerationTime;
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Field;
 
@@ -48,6 +50,7 @@ public abstract class SuperNode implements Serializable {
     private Status status;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @Generated(GenerationTime.ALWAYS)
     private Date temporalMark;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -55,7 +58,7 @@ public abstract class SuperNode implements Serializable {
 
     @Version
     private Long lockVersion;
-    
+
     public Long getId() {
         return id;
     }
@@ -63,7 +66,7 @@ public abstract class SuperNode implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-    
+
     public Status getStatus() {
         return status;
     }
@@ -133,5 +136,4 @@ public abstract class SuperNode implements Serializable {
         return getUri();
     }
 
-    
 }
