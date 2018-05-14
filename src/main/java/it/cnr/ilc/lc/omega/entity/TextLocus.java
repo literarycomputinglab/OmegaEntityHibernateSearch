@@ -38,26 +38,27 @@ public class TextLocus extends Locus<TextContent> implements Cloneable {
     @Override
     public void setAnnotation(Annotation annotation) {
 
-        Source<TextContent> stc = this.getSource();
+        if (this.getPointsTo().equals(Locus.PointsTo.CONTENT.name())) {
+            Source<TextContent> stc = this.getSource();
 
-        try {
-            this.setFragment(stc.getContent().getText().substring(this.getStartLocus(), this.getEndLocus()));
-        } catch (NullPointerException e) {
+            try {
+                this.setFragment(stc.getContent().getText().substring(this.getStartLocus(), this.getEndLocus()));
+            } catch (NullPointerException e) {
 
-            if (null == this.getSource()) {
-                logger.error("Impossible to create fragment! Source is null: " + e.getMessage());
-            } else if (null == stc.getContent()) {
-                logger.error("Impossible to create fragment! Content is null: " + e.getMessage());
-            } else if (null == stc.getContent().getText()) {
-                logger.error("Impossible to create fragment! Text is null: " + e.getMessage());
+                if (null == this.getSource()) {
+                    logger.error("Impossible to create fragment! Source is null: " + e.getMessage());
+                } else if (null == stc.getContent()) {
+                    logger.error("Impossible to create fragment! Content is null: " + e.getMessage());
+                } else if (null == stc.getContent().getText()) {
+                    logger.error("Impossible to create fragment! Text is null: " + e.getMessage());
+                }
+            } catch (IndexOutOfBoundsException ee) {
+                logger.error("Data lenght: " + stc.getContent().getText().length()
+                        + ", start " + this.getStartLocus() + ", end " + this.getEndLocus() + ", ", ee);
+            } catch (Exception eee) {
+                logger.error("Error ", eee);
             }
-        } catch (IndexOutOfBoundsException ee) {
-            logger.error("Data lenght: " + stc.getContent().getText().length()
-                    + ", start " + this.getStartLocus() + ", end " + this.getEndLocus() + ", ", ee);
-        } catch (Exception eee) {
-            logger.error("Error ", eee);
         }
-
         super.setAnnotation(annotation);
 
     }
