@@ -55,7 +55,7 @@ public abstract class Locus<T extends Content> extends SuperNode implements Clon
         return pointsTo;
     }
 
-    void setPointsTo(String pointsTo) {
+    public void setPointsTo(String pointsTo) {
         this.pointsTo = pointsTo;
     }
 
