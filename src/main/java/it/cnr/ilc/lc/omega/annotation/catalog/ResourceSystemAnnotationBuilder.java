@@ -34,7 +34,7 @@ public class ResourceSystemAnnotationBuilder extends AbstractAnnotationBuilder<R
         extension.setDescription(description);
         extension.setType(type);
         extension.setDepth(depth);
-        extension.setUri(getUri().toASCIIString());
+//        extension.setUri(getUri().toASCIIString()); //in Annotation.DATA non si deve mettere la URI perché è messa in Annotation
         extension.setAnnotationAuthor(annotationAuthor);
         extension.setCreationDate(creationDate);
 

@@ -68,11 +68,16 @@ public class Annotation<T extends Content, E extends Annotation.Data> extends So
     @Fetch(FetchMode.JOIN)
     private E data;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    /*
+    * https://stackoverflow.com/questions/10161165/jpa-which-implementations-support-lazy-loading-outside-transactions
+    * https://developer.jboss.org/wiki/OpenSessionInView
+    */
+    //@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL) //modificato per aver aggiunto "hibernate.enable_lazy_load_no_trans"=true in persistence.xml
     private List<Locus> loci;
 
-    @ManyToMany(cascade=CascadeType.ALL) //NON METTERE ASSOLUTAMENTE!!! (fetch = FetchType.EAGER)
-    @LazyCollection(LazyCollectionOption.FALSE)
+    @ManyToMany(cascade = CascadeType.ALL) //NON METTERE ASSOLUTAMENTE!!! (fetch = FetchType.EAGER)
+    //@LazyCollection(LazyCollectionOption.FALSE) //tolto perché aggiunto  "hibernate.enable_lazy_load_no_trans"=true in persistence.xml
     private List<AnnotationRelation> relations = new ArrayList<>();
 
     private Annotation() {
@@ -136,7 +141,7 @@ public class Annotation<T extends Content, E extends Annotation.Data> extends So
 
         @Field
         @Temporal(javax.persistence.TemporalType.DATE)
-        @Generated(GenerationTime.INSERT) 
+        @Generated(GenerationTime.INSERT)
         private Date creationDate;
 
         public final void setIndexField(String indexField) {
@@ -177,6 +182,21 @@ public class Annotation<T extends Content, E extends Annotation.Data> extends So
 
         public final void setCreationDate(Date creationDate) {
             this.creationDate = creationDate;
+        }
+
+        @Override
+        public final void setUri(String uri) {
+            log.error("Method setUri() of classes extending Annotation.Data cannot be invoked! Invoke instead setUri on Annotation");
+            throw new InvocationMethodException("Method setUri() of classes extending Annotation.Data cannot be invoked! Invoke instead setUri on Annotation");
+            
+        }
+
+        public static class InvocationMethodException extends RuntimeException {
+
+            public InvocationMethodException(String message) {
+                super(message);
+            }
+
         }
 
     }

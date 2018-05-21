@@ -25,7 +25,7 @@ public class ImageLocus extends Locus<ImageContent> implements Cloneable {
 
     public void setWKTstr(String WKTstr) {
         if (getPointsTo().equals(Locus.PointsTo.SOURCE.name())) {
-            throw new InvocationMthodException("content boundaries cannot be set on locus pointing to " + Locus.PointsTo.SOURCE.name());
+            throw new InvocationMethodException("content boundaries cannot be set on locus pointing to " + Locus.PointsTo.SOURCE.name());
         }
         this.WKTstr = WKTstr;
     }
@@ -36,9 +36,9 @@ public class ImageLocus extends Locus<ImageContent> implements Cloneable {
         return l;
     }
 
-    public static class InvocationMthodException extends RuntimeException {
+    public static class InvocationMethodException extends RuntimeException {
 
-        public InvocationMthodException(String message) {
+        public InvocationMethodException(String message) {
             super(message);
         }
 
