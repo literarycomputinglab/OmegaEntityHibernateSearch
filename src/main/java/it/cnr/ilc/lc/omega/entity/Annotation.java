@@ -80,7 +80,7 @@ public class Annotation<T extends Content, E extends Annotation.Data> extends So
     //@LazyCollection(LazyCollectionOption.FALSE) //tolto perché aggiunto  "hibernate.enable_lazy_load_no_trans"=true in persistence.xml
     private List<AnnotationRelation> relations = new ArrayList<>();
 
-    private Annotation() {
+    Annotation() {
     }
 
     public <V extends Content> void addLocus(Locus<V> locus) {
@@ -111,7 +111,11 @@ public class Annotation<T extends Content, E extends Annotation.Data> extends So
         this.data = data;
     }
 
-    public Iterator<AnnotationRelation> getRelations() {
+    public List<AnnotationRelation> getRelations() {
+        return relations;
+    }
+
+    public Iterator<AnnotationRelation> getRelationsIterator() {
         return relations.iterator();
     }
 

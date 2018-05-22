@@ -17,10 +17,10 @@ public class AnnotationRelation extends SuperNode {
     @Column
     private String type;
 
-    @ManyToOne (cascade = CascadeType.ALL)
+    @ManyToOne (cascade = CascadeType.ALL, fetch = FetchType.LAZY) //LAZY per evitare duplicati dovuti alla navigazione delle annotazioni
     private Annotation sourceAnnotation;
 
-    @ManyToOne (cascade = CascadeType.ALL)
+    @ManyToOne (cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Annotation targetAnnotation;
 
     AnnotationRelation() {
