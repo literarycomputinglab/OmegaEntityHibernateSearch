@@ -98,7 +98,8 @@ public class Annotation<T extends Content, E extends Annotation.Data> extends So
     public List<Locus> getLoci() {
         return loci;
     }
-
+    
+    @JsonIgnore
     public <V extends Content> Iterator<Locus<V>> getLociIterator(Class<V> clazz) {
         return (Iterator) loci.iterator();
     }
@@ -115,6 +116,7 @@ public class Annotation<T extends Content, E extends Annotation.Data> extends So
         return relations;
     }
 
+    @JsonIgnore
     public Iterator<AnnotationRelation> getRelationsIterator() {
         return relations.iterator();
     }
