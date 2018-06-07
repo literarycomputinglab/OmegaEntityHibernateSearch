@@ -31,6 +31,7 @@ public class AbbreviationAnnotationBuilder extends AbstractAnnotationBuilder<Abb
         return this;
     }
 
+    @Override
     public AbbreviationAnnotationBuilder URI(URI uri) {
         setURI(uri);
         return this;

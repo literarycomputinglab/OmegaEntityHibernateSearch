@@ -46,7 +46,7 @@ public class AbbreviationAnnotation extends Annotation.Data {
 
     @Override
     public <E extends Annotation.Data> E get() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return (E) this;
     }
     
 }

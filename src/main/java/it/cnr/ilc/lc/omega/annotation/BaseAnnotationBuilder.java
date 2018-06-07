@@ -23,13 +23,13 @@ public class BaseAnnotationBuilder extends AbstractAnnotationBuilder<BaseAnnotat
         return this;
     }
     
+    @Override
     public BaseAnnotationBuilder URI(URI uri) {
         setURI(uri);
         return this;
     }
     
-    
-
+    @Override
     public BaseAnnotation build(BaseAnnotation extension) {
         extension.setText(this.text);
         extension.setIndexField(text);
