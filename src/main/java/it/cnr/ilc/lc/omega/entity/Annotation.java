@@ -68,14 +68,14 @@ public class Annotation<T extends Content, E extends Annotation.Data> extends So
     /*
     * https://stackoverflow.com/questions/10161165/jpa-which-implementations-support-lazy-loading-outside-transactions
     * https://developer.jboss.org/wiki/OpenSessionInView
-    */
+     */
     //@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @OneToMany(cascade = CascadeType.ALL) //modificato per aver aggiunto "hibernate.enable_lazy_load_no_trans"=true in persistence.xml
-    private List<Locus> loci;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "annotation") //modificato per aver aggiunto "hibernate.enable_lazy_load_no_trans"=true in persistence.xml
+    private List<Locus> loci = new ArrayList<>(4);
 
     @ManyToMany(cascade = CascadeType.ALL) //NON METTERE ASSOLUTAMENTE!!! (fetch = FetchType.EAGER)
     //@LazyCollection(LazyCollectionOption.FALSE) //tolto perché aggiunto  "hibernate.enable_lazy_load_no_trans"=true in persistence.xml
-    private List<AnnotationRelation> relations = new ArrayList<>();
+    private List<AnnotationRelation> relations = new ArrayList<>(4);
 
     Annotation() {
     }
@@ -95,7 +95,7 @@ public class Annotation<T extends Content, E extends Annotation.Data> extends So
     public List<Locus> getLoci() {
         return loci;
     }
-    
+
     @JsonIgnore
     public <V extends Content> Iterator<Locus<V>> getLociIterator(Class<V> clazz) {
         return (Iterator) loci.iterator();
@@ -124,6 +124,23 @@ public class Annotation<T extends Content, E extends Annotation.Data> extends So
 
     public boolean removeRelation(AnnotationRelation relation) {
         return relations.remove(relation);
+    }
+
+    public boolean isEmptyLoci() {
+
+        if (loci != null) {
+            return loci.isEmpty();
+        } else {
+            return true;
+        }
+    }
+
+    public boolean isEmptyRelation() {
+        if (relations != null) {
+            return relations.isEmpty();
+        } else {
+            return true;
+        }
     }
 
     @Entity
@@ -191,7 +208,7 @@ public class Annotation<T extends Content, E extends Annotation.Data> extends So
         public final void setUri(String uri) {
             log.error("Method setUri() of classes extending Annotation.Data cannot be invoked! Invoke instead setUri on Annotation");
             throw new InvocationMethodException("Method setUri() of classes extending Annotation.Data cannot be invoked! Invoke instead setUri on Annotation");
-            
+
         }
 
         public static class InvocationMethodException extends RuntimeException {

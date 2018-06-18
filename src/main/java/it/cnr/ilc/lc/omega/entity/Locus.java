@@ -7,7 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.search.annotations.IndexedEmbedded;
 
 /**
@@ -25,11 +28,15 @@ public abstract class Locus<T extends Content> extends SuperNode implements Clon
         SOURCE, CONTENT;
     }
 
-    @ManyToOne (cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+   //@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    //@ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Annotation annotation;
 
     @IndexedEmbedded
-    @ManyToOne (cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
+//    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "source_id")
     private Source<T> source;
 
     private String pointsTo;
@@ -38,8 +45,8 @@ public abstract class Locus<T extends Content> extends SuperNode implements Clon
         return annotation;
     }
 
-    protected void setAnnotation(Annotation annotation)  {
-        
+    protected void setAnnotation(Annotation annotation) {
+
         this.annotation = annotation;
     }
 
@@ -59,10 +66,10 @@ public abstract class Locus<T extends Content> extends SuperNode implements Clon
         this.pointsTo = pointsTo;
     }
 
-    public <K extends Locus<T>> K get () {
+    public <K extends Locus<T>> K get() {
         return (K) this;
     }
-    
+
     @Override
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
@@ -78,8 +85,7 @@ public abstract class Locus<T extends Content> extends SuperNode implements Clon
             throw new RuntimeException(ex);
         }
     }
-    
-    
+
     public String getSourceUri() {
         return source.getUri();
     }
