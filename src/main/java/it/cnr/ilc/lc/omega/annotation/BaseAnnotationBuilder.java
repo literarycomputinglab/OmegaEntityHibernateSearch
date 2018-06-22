@@ -9,26 +9,29 @@ import it.cnr.ilc.lc.omega.entity.AbstractAnnotationBuilder;
 import java.net.URI;
 import java.util.Date;
 
-
 /**
  *
  * @author angelo
  */
-public class BaseAnnotationBuilder extends AbstractAnnotationBuilder<BaseAnnotation>{
+public class BaseAnnotationBuilder extends AbstractAnnotationBuilder<BaseAnnotation> {
 
     private String text = "";
-    
+
     public BaseAnnotationBuilder text(String f) {
         this.text = f;
         return this;
     }
-    
+
     @Override
     public BaseAnnotationBuilder URI(URI uri) {
-        setURI(uri);
-        return this;
+        if (null != uri) {
+            setURI(uri);
+            return this;
+        } else {
+            throw new IllegalArgumentException("Uri is null");
+        }
     }
-    
+
     @Override
     public BaseAnnotation build(BaseAnnotation extension) {
         extension.setText(this.text);
